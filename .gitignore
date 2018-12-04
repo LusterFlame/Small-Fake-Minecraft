@@ -3,6 +3,7 @@
 [Oo]bj/
 [Bb]uild/
 [Bb]uilds/
+metadata/
 Assets/AssetStoreTools*
 
 # Visual Studio cache directory
@@ -34,3 +35,6 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+Small Fake Minecraft/Library/CurrentLayout.dwlt
+Small Fake Minecraft/Library/assetDatabase3
+*.log

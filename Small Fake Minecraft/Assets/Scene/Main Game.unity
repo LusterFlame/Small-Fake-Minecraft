@@ -153,9 +153,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42d9193173671cf49bb4aaa49a4e021e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Bedrock: {fileID: 1985480750155224, guid: 6b51cb14c47cb914e8155824c989b866, type: 2}
-  Grass: {fileID: 1271264497905964, guid: a6e29a0d282cf9849a1c769f6e3e8888, type: 2}
-  dirt: {fileID: 1896348060928902, guid: 661bf33112a9a8743b3309b9016fdf67, type: 2}
+  bedrock: {fileID: 0}
+  grass: {fileID: 0}
+  dirt: {fileID: 0}
 --- !u!1 &516853212
 GameObject:
   m_ObjectHideFlags: 0

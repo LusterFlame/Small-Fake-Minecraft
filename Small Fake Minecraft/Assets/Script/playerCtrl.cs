@@ -6,20 +6,18 @@ using System;
 public class playerCtrl : MonoBehaviour
 {
 	//player need rigid body!
+
 	private void OnCollisionEnter(Collision collision)
 	{
-		/*havn't done yet
-		//maybe use tag or something...
 		switch (collision.transform.name)
 		{
-			case blockname:
+			case "Grass Block(Clone)":
 				onGround = true;
 				Debug.Log("onGround");
 				break;
 			default:
 				break;
 		}
-		*/
 	}
 
 	private void RightMouseClick()
@@ -30,7 +28,6 @@ public class playerCtrl : MonoBehaviour
 			RaycastHit ray_cast_hit;
 			if (Physics.Raycast(ray, out ray_cast_hit))
 			{
-				rightPlace = ray_cast_hit.point;
 				Debug.Log("rightClick");
 				rightClick = true;
 			}
@@ -41,7 +38,8 @@ public class playerCtrl : MonoBehaviour
 	{
 		if (Input.GetMouseButtonDown(0) && canDestory)
 		{
-			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+			//Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+			Ray ray = Camera.main.ViewportPointToRay(new Vector2((float)0.5, (float)0.5));
 			RaycastHit rh;
 
 			if (Physics.Raycast(ray, out rh))
@@ -59,48 +57,72 @@ public class playerCtrl : MonoBehaviour
 
 	private void headRotate()
 	{
-
 		yaw += speedH * Input.GetAxis("Mouse X");
 		pitch -= speedV * Input.GetAxis("Mouse Y");
 
 		transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
 	}
 
-	/*return the vector3 that player face to (is relative) , then rotate it [angle] degree on Y-axis(change x & z)*/
-	Vector3 playerDir(double angle)
+	/*return the vector3 that player face to (is relative)*/
+	Vector3 playerFront(int mode)//mode 0,1,2 is none,front,back
 	{
-		double forward = Math.Sin(((double)yaw + angle) * Math.PI / 180);
-		double left = Math.Cos(((double)yaw + angle) * Math.PI / 180);
+		if (mode == 0)
+		{
+			return Vector3.zero;
+		}
+		double forward = Math.Sin(((double)yaw + (mode - 1) * 180) * Math.PI / 180);
+		double left = Math.Cos(((double)yaw + (mode - 1) * 180) * Math.PI / 180);
 		return new Vector3((float)forward, 0, (float)left);
+	}
+	Vector3 playerLeft(int mode)//mode 0,1,2 is none,left,right
+	{
+		if (mode == 0)
+		{
+			return Vector3.zero;
+		}
+		double forward = Math.Sin(((double)yaw + (mode - 1) * 180 - 90) * Math.PI / 180);
+		double left = Math.Cos(((double)yaw + (mode - 1) * 180 - 90) * Math.PI / 180);
+		return new Vector3((float)forward, 0, (float)left);
+	}
+
+	int playerGoFront = 0;
+	int playerGoLeft = 0;
+	private void playerWalk()
+	{
+		if (onGround)
+		{
+			GetComponent<Rigidbody>().velocity = (playerFront(playerGoFront) + playerLeft(playerGoLeft)) * movingSpeed * Time.deltaTime;
+		}
+		else
+		{
+			//GetComponent<Rigidbody>().velocity = Vector3.Normalize(playerFront(playerGoFront) + playerLeft(playerGoLeft)) * movingSpeed * Time.deltaTime*movingSpeedRateInAir;
+		}
 	}
 
 	private void moveControl()
 	{
-		//animator.SetFloat("speed", 0f); //animation switch
 
+		//animator.SetFloat("speed", 0f); //animation switch
+		playerGoFront = playerGoLeft = 0;
 		if (Input.GetKey(KeyCode.W))
 		{
-			//transform.localPosition += moving_speed * Time.deltaTime * Vector3.forward;
-			GetComponent<Rigidbody>().velocity = playerDir(0) * movingSpeed * Time.deltaTime;
-
-			//animator.SetFloat("speed", moving_speed);
+			playerGoFront = 1;
 		}
-		if (Input.GetKey(KeyCode.D))
+		else if (Input.GetKey(KeyCode.S))
 		{
-			GetComponent<Rigidbody>().velocity = playerDir(90) * movingSpeed * Time.deltaTime;
-
+			playerGoFront = 2;
 		}
-		if (Input.GetKey(KeyCode.S))
-		{
-			GetComponent<Rigidbody>().velocity = playerDir(180) * movingSpeed * Time.deltaTime;
 
-		}
 		if (Input.GetKey(KeyCode.A))
 		{
-			GetComponent<Rigidbody>().velocity = playerDir(270) * movingSpeed * Time.deltaTime;
-
+			playerGoLeft = 1;
 		}
-		
+		else if (Input.GetKey(KeyCode.D))
+		{
+			playerGoLeft = 2;
+		}
+		playerWalk();
+
 	}
 
 	private void jumpControl()
@@ -108,7 +130,6 @@ public class playerCtrl : MonoBehaviour
 		if (Input.GetKey(KeyCode.Space) && onGround)
 		{
 			GetComponent<Rigidbody>().AddForce(0, jumpForce * GetComponent<Rigidbody>().mass, 0);
-			//transform.localPosition += jump_force * Time.deltaTime * Vector3.up;
 			onGround = false;
 		}
 	}
@@ -118,32 +139,33 @@ public class playerCtrl : MonoBehaviour
 	{
 		animator = GetComponent<Animator>();
 	}
-
+	
 	// Update is called once per frame
 	void Update()
 	{
-		movingSpeed = 0;
 		jumpControl();
 		moveControl();
 		headRotate();
 		tryDestoryBlock();
 
 		RightMouseClick();
+		Debug.Log(GetComponent<Rigidbody>().velocity.y);
 	}
 
 	/*↓ maybe change in the future*/
-	string blockname = "grass";//the name of gameobject of floor
+	string blockname = "Grass Block(Clone)";//the name of gameobject that player can break
 
 
 	//public Vector3 moving_vector;
 	private MeshRenderer meshRenderer;
 
 	[SerializeField] float movingSpeed = 10f;
+	//[SerializeField] float movingSpeedRateInAir = 0.3f;
 	public float jumpForce = 1000f;
-	
+
 	[SerializeField] bool rightClick = false;//true when player rightclick a block
 
-	[SerializeField] bool onGround = false; //if player standing on ground
+	public bool onGround = false; //if player standing on ground
 	[SerializeField] bool canDestory = true; //if player can destroy blocks
 
 	Animator animator;

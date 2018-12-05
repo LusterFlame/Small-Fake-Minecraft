@@ -8,15 +8,18 @@ public class playerCtrl : MonoBehaviour
 	//player need rigid body!
 	private void OnCollisionEnter(Collision collision)
 	{
+		/*havn't done yet
+		//maybe use tag or something...
 		switch (collision.transform.name)
 		{
-			case "floor":
+			case blockname:
 				onGround = true;
 				Debug.Log("onGround");
 				break;
 			default:
 				break;
 		}
+		*/
 	}
 
 	private void RightMouseClick()
@@ -63,6 +66,7 @@ public class playerCtrl : MonoBehaviour
 		transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
 	}
 
+	/*return the vector3 that player face to (is relative) , then rotate it [angle] degree on Y-axis(change x & z)*/
 	Vector3 playerDir(double angle)
 	{
 		double forward = Math.Sin(((double)yaw + angle) * Math.PI / 180);
@@ -81,6 +85,11 @@ public class playerCtrl : MonoBehaviour
 
 			//animator.SetFloat("speed", moving_speed);
 		}
+		if (Input.GetKey(KeyCode.D))
+		{
+			GetComponent<Rigidbody>().velocity = playerDir(90) * movingSpeed * Time.deltaTime;
+
+		}
 		if (Input.GetKey(KeyCode.S))
 		{
 			GetComponent<Rigidbody>().velocity = playerDir(180) * movingSpeed * Time.deltaTime;
@@ -91,11 +100,7 @@ public class playerCtrl : MonoBehaviour
 			GetComponent<Rigidbody>().velocity = playerDir(270) * movingSpeed * Time.deltaTime;
 
 		}
-		if (Input.GetKey(KeyCode.D))
-		{
-			GetComponent<Rigidbody>().velocity = playerDir(90) * movingSpeed * Time.deltaTime;
-
-		}
+		
 	}
 
 	private void jumpControl()
@@ -111,7 +116,6 @@ public class playerCtrl : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-
 		animator = GetComponent<Animator>();
 	}
 
@@ -127,18 +131,20 @@ public class playerCtrl : MonoBehaviour
 		RightMouseClick();
 	}
 
-	string blockname;
+	/*↓ maybe change in the future*/
+	string blockname = "grass";//the name of gameobject of floor
+
 
 	//public Vector3 moving_vector;
 	private MeshRenderer meshRenderer;
+
 	[SerializeField] float movingSpeed = 10f;
 	public float jumpForce = 1000f;
+	
+	[SerializeField] bool rightClick = false;//true when player rightclick a block
 
-	private Vector3 rightPlace;
-	[SerializeField] bool rightClick = false;
-
-	[SerializeField] bool onGround = false;
-	[SerializeField] bool canDestory = true;
+	[SerializeField] bool onGround = false; //if player standing on ground
+	[SerializeField] bool canDestory = true; //if player can destroy blocks
 
 	Animator animator;
 

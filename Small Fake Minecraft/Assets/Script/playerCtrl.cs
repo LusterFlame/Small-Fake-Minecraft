@@ -57,10 +57,14 @@ public class playerCtrl : MonoBehaviour
 
 	private void headRotate()
 	{
-		yaw += speedH * Input.GetAxis("Mouse X");
-		pitch -= speedV * Input.GetAxis("Mouse Y");
+		if (lockMouse)
+		{
+			yaw += speedH * Input.GetAxis("Mouse X");
+			pitch -= speedV * Input.GetAxis("Mouse Y");
 
-		transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
+			transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
+
+		}
 	}
 
 	/*return the vector3 that player face to (is relative)*/
@@ -91,7 +95,7 @@ public class playerCtrl : MonoBehaviour
 	{
 		if (onGround)
 		{
-			GetComponent<Rigidbody>().velocity = (playerFront(playerGoFront) + playerLeft(playerGoLeft)) * movingSpeed * Time.deltaTime;
+			GetComponent<Rigidbody>().velocity = (playerFront(playerGoFront) + playerLeft(playerGoLeft)) * movingSpeed * Time.deltaTime * movingSpeedRate;
 		}
 		else
 		{
@@ -121,6 +125,15 @@ public class playerCtrl : MonoBehaviour
 		{
 			playerGoLeft = 2;
 		}
+
+		if (Input.GetKey(KeyCode.LeftShift))
+		{
+			movingSpeedRate = 2;
+		}
+		if (Input.GetKeyUp(KeyCode.LeftShift))
+		{
+			movingSpeedRate = 1;
+		}
 		playerWalk();
 
 	}
@@ -134,22 +147,56 @@ public class playerCtrl : MonoBehaviour
 		}
 	}
 
+	GameObject pauseCanvasClone;
+	private void mouseCtrl()
+	{
+		if (Input.GetKeyUp(KeyCode.Escape))
+		{
+			lockMouse = !lockMouse;
+			if (lockMouse)
+			{
+				Time.timeScale = 1f;
+				Destroy(pauseCanvasClone);
+			}
+			else
+			{
+				Time.timeScale = 0f;
+				pauseCanvasClone = Instantiate(pauseCanvas, Vector2.zero, Quaternion.identity);
+			}
+		}
+	}
+
+	public void playerESC()
+	{
+		lockMouse = true;
+		Time.timeScale = 1f;
+	}
+
+
 	// Use this for initialization
 	void Start()
 	{
 		animator = GetComponent<Animator>();
+		Cursor.lockState = CursorLockMode.Locked;//lock mouse
 	}
-	
+
 	// Update is called once per frame
 	void Update()
 	{
-		jumpControl();
-		moveControl();
-		headRotate();
-		tryDestoryBlock();
-
-		RightMouseClick();
-		Debug.Log(GetComponent<Rigidbody>().velocity.y);
+		mouseCtrl();
+		if (lockMouse)
+		{
+			Cursor.lockState = CursorLockMode.Locked;
+			jumpControl();
+			moveControl();
+			headRotate();
+			tryDestoryBlock();
+			RightMouseClick();
+		}
+		else
+		{
+			Cursor.lockState = CursorLockMode.None;
+		}
 	}
 
 	/*↓ maybe change in the future*/
@@ -160,6 +207,7 @@ public class playerCtrl : MonoBehaviour
 	private MeshRenderer meshRenderer;
 
 	[SerializeField] float movingSpeed = 10f;
+	[SerializeField] float movingSpeedRate = 1.0f;
 	//[SerializeField] float movingSpeedRateInAir = 0.3f;
 	public float jumpForce = 1000f;
 
@@ -177,4 +225,7 @@ public class playerCtrl : MonoBehaviour
 	private float yaw = 0.0f;
 	private float pitch = 0.0f;
 	///
+
+	[SerializeField] bool lockMouse = true;
+	public GameObject pauseCanvas;//Pause Canvas
 }

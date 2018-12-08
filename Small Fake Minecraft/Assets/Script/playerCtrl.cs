@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.UI;
 
 public class playerCtrl : MonoBehaviour
 {
@@ -61,10 +62,8 @@ public class playerCtrl : MonoBehaviour
 		{
 			yaw += speedH * Input.GetAxis("Mouse X");
 			pitch -= speedV * Input.GetAxis("Mouse Y");
-
-			transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
-
 		}
+		transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
 	}
 
 	/*return the vector3 that player face to (is relative)*/
@@ -148,6 +147,9 @@ public class playerCtrl : MonoBehaviour
 	}
 
 	GameObject pauseCanvasClone;
+	GameObject hotbarCanvasClone;
+	GameObject keyTCanvasClone;
+	private bool keyT = false;
 	private void mouseCtrl()
 	{
 		if (Input.GetKeyUp(KeyCode.Escape))
@@ -155,15 +157,38 @@ public class playerCtrl : MonoBehaviour
 			lockMouse = !lockMouse;
 			if (lockMouse)
 			{
-				Time.timeScale = 1f;
-				Destroy(pauseCanvasClone);
+				if (keyT)
+				{
+					closeKeyTCanvas();
+				}
+				else
+				{
+					Time.timeScale = 1f;
+					Destroy(pauseCanvasClone);
+					hotbarCanvasClone = Instantiate(hotbarCanvas, Vector2.zero, Quaternion.identity);
+				}
 			}
 			else
 			{
 				Time.timeScale = 0f;
 				pauseCanvasClone = Instantiate(pauseCanvas, Vector2.zero, Quaternion.identity);
+				Destroy(hotbarCanvasClone);
 			}
 		}
+
+		if (Input.GetKey(KeyCode.T) && lockMouse)
+		{
+			lockMouse = false;
+			keyT = true;
+			keyTCanvasClone = Instantiate(keyTCanvas, Vector2.zero, Quaternion.identity);
+
+		}
+	}
+
+	private void closeKeyTCanvas()
+	{
+		keyT = false;
+		Destroy(keyTCanvasClone);
 	}
 
 	public void playerESC()
@@ -172,12 +197,22 @@ public class playerCtrl : MonoBehaviour
 		Time.timeScale = 1f;
 	}
 
+	private void commandInput()
+	{
+		if (keyT)
+		{
+			string cmd = inputField.GetComponent<Text>().text;//still can't get the command, keep trying
+			Debug.Log(cmd);
+		}
+	}
 
 	// Use this for initialization
 	void Start()
 	{
 		animator = GetComponent<Animator>();
 		Cursor.lockState = CursorLockMode.Locked;//lock mouse
+		hotbarCanvasClone = Instantiate(hotbarCanvas, Vector2.zero, Quaternion.identity);
+		inputField = keyTCanvas.gameObject.transform.GetChild(0).GetChild(1).gameObject;
 	}
 
 	// Update is called once per frame
@@ -187,15 +222,18 @@ public class playerCtrl : MonoBehaviour
 		if (lockMouse)
 		{
 			Cursor.lockState = CursorLockMode.Locked;
+			GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
 			jumpControl();
 			moveControl();
 			headRotate();
 			tryDestoryBlock();
 			RightMouseClick();
+			commandInput();
 		}
 		else
 		{
 			Cursor.lockState = CursorLockMode.None;
+			GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
 		}
 	}
 
@@ -211,7 +249,7 @@ public class playerCtrl : MonoBehaviour
 	//[SerializeField] float movingSpeedRateInAir = 0.3f;
 	public float jumpForce = 1000f;
 
-	[SerializeField] bool rightClick = false;//true when player rightclick a block
+	private bool rightClick = false;//true when player rightclick a block
 
 	public bool onGround = false; //if player standing on ground
 	[SerializeField] bool canDestory = true; //if player can destroy blocks
@@ -228,4 +266,7 @@ public class playerCtrl : MonoBehaviour
 
 	[SerializeField] bool lockMouse = true;
 	public GameObject pauseCanvas;//Pause Canvas
+	public GameObject hotbarCanvas;
+	public GameObject keyTCanvas;
+	private GameObject inputField;
 }

@@ -236,6 +236,33 @@ Prefab:
       value: 
       objectReference: {fileID: 1943687777923842, guid: b8c9fb8415d40ad4a8cb4aab481e53c9,
         type: 2}
+    - target: {fileID: 224592557109176108, guid: 5f8375c9235d9bb4e884c32896090b9b,
+        type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 224592557109176108, guid: 5f8375c9235d9bb4e884c32896090b9b,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224592557109176108, guid: 5f8375c9235d9bb4e884c32896090b9b,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 176.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114570726902833992, guid: 5f8375c9235d9bb4e884c32896090b9b,
+        type: 2}
+      propertyPath: hotbarCanvas
+      value: 
+      objectReference: {fileID: 1141859487581002, guid: 09bef887d5772ca46a1d102eaf29f7f3,
+        type: 2}
+    - target: {fileID: 114570726902833992, guid: 5f8375c9235d9bb4e884c32896090b9b,
+        type: 2}
+      propertyPath: keyTCanvas
+      value: 
+      objectReference: {fileID: 1891584262270948, guid: 219b0542a0eac3a4996811da81bd4fb0,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5f8375c9235d9bb4e884c32896090b9b, type: 2}
   m_IsPrefabParent: 0

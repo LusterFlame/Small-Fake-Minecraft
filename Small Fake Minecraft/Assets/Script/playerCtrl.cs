@@ -14,7 +14,6 @@ public class playerCtrl : MonoBehaviour
 		{
 			case "Grass Block(Clone)":
 				onGround = true;
-				Debug.Log("onGround");
 				break;
 			default:
 				break;
@@ -27,9 +26,9 @@ public class playerCtrl : MonoBehaviour
 		{
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit ray_cast_hit;
-			if (Physics.Raycast(ray, out ray_cast_hit))
+			if (Physics.Raycast(ray, out ray_cast_hit, 16f, 2))
 			{
-				Debug.Log("rightClick");
+				Debug.Log("Rightclick: " + ray_cast_hit.collider.name);
 				rightClick = true;
 			}
 		}
@@ -43,7 +42,7 @@ public class playerCtrl : MonoBehaviour
 			Ray ray = Camera.main.ViewportPointToRay(new Vector2((float)0.5, (float)0.5));
 			RaycastHit rh;
 
-			if (Physics.Raycast(ray, out rh))
+			if (Physics.Raycast(ray, out rh,16f, 0))//2:ignore RayCast
 			{
 				Debug.Log("click: " + rh.collider.name);
 				if (rh.collider.name == blockname)
@@ -63,7 +62,10 @@ public class playerCtrl : MonoBehaviour
 			yaw += speedH * Input.GetAxis("Mouse X");
 			pitch -= speedV * Input.GetAxis("Mouse Y");
 		}
-		transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
+		transform.GetChild(0).eulerAngles = new Vector3(0, yaw, 0.0f);
+		transform.GetChild(0).GetChild(0).eulerAngles = new Vector3(pitch, yaw, 0.0f);
+		//transform.GetChild(0).GetChild(1).GetChild(0).GetChild(2).GetChild(0).GetChild(1).GetChild(0).transform.eulerAngles = new Vector3(51.563f + pitch, -82.956f + yaw, 8.315f + 0.0f);//playerHead
+
 	}
 
 	/*return the vector3 that player face to (is relative)*/
@@ -105,15 +107,18 @@ public class playerCtrl : MonoBehaviour
 	private void moveControl()
 	{
 
-		//animator.SetFloat("speed", 0f); //animation switch
+		animator.SetBool("runForward", false);
+		animator.SetBool("runBackward", false);
 		playerGoFront = playerGoLeft = 0;
 		if (Input.GetKey(KeyCode.W))
 		{
 			playerGoFront = 1;
+			animator.SetBool("runForward", true);
 		}
 		else if (Input.GetKey(KeyCode.S))
 		{
 			playerGoFront = 2;
+			animator.SetBool("runBackward", true);
 		}
 
 		if (Input.GetKey(KeyCode.A))
@@ -206,13 +211,19 @@ public class playerCtrl : MonoBehaviour
 		}
 	}
 
+	private void Awake()
+	{
+		/*related to GetChild*/
+		inputField = keyTCanvas.gameObject.transform.GetChild(0).GetChild(1).gameObject;
+		animator = transform.GetChild(0).GetComponent<Animator>();
+	}
+
 	// Use this for initialization
 	void Start()
 	{
-		animator = GetComponent<Animator>();
 		Cursor.lockState = CursorLockMode.Locked;//lock mouse
 		hotbarCanvasClone = Instantiate(hotbarCanvas, Vector2.zero, Quaternion.identity);
-		inputField = keyTCanvas.gameObject.transform.GetChild(0).GetChild(1).gameObject;
+
 	}
 
 	// Update is called once per frame
@@ -222,7 +233,7 @@ public class playerCtrl : MonoBehaviour
 		if (lockMouse)
 		{
 			Cursor.lockState = CursorLockMode.Locked;
-			GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+			//GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY;
 			jumpControl();
 			moveControl();
 			headRotate();
@@ -233,7 +244,7 @@ public class playerCtrl : MonoBehaviour
 		else
 		{
 			Cursor.lockState = CursorLockMode.None;
-			GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
+			//GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
 		}
 	}
 

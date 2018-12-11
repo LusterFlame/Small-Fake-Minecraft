@@ -108,7 +108,7 @@ public class playerCtrl : MonoBehaviour
 		}
 		else
 		{
-			Vector3 airSpeed = movingSpeedRate * ((playerFront(playerGoFront) + playerLeft(playerGoLeft)) * movingSpeed * Time.deltaTime * movingSpeedRateInAir + new Vector3(0, GetComponent<Rigidbody>().velocity.y, 0));
+			Vector3 airSpeed = (movingSpeedRate * (playerFront(playerGoFront) + playerLeft(playerGoLeft)) * movingSpeed * Time.deltaTime * movingSpeedRateInAir + new Vector3(0, GetComponent<Rigidbody>().velocity.y, 0));
 			GetComponent<Rigidbody>().velocity = new Vector3(airSpeed.x, airSpeed.y, airSpeed.z);
 		}
 	}

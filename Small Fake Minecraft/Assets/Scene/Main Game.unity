@@ -168,7 +168,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 6657052}
   m_LocalRotation: {x: -0.0027635503, y: -0.017991785, z: -0.0037033374, w: 0.9998275}
-  m_LocalPosition: {x: 0.08532643, y: 0.3482767, z: -2.5447319}
+  m_LocalPosition: {x: 0.08532643, y: 0.348277, z: -2.5447319}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1478393252}
@@ -397,6 +397,7 @@ GameObject:
   - component: {fileID: 204598033}
   - component: {fileID: 204598031}
   - component: {fileID: 204598034}
+  - component: {fileID: 204598032}
   m_Layer: 2
   m_Name: charCenter
   m_TagString: Untagged
@@ -433,6 +434,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!65 &204598032
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 204598029}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.6, y: 0.5, z: 0.6}
+  m_Center: {x: 0, y: 0, z: 0.1}
 --- !u!114 &204598033
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -444,9 +457,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9228f8f98d4c2f34ca0073051ad07619, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movingSpeed: 200
+  movingSpeed: 75
   movingSpeedRate: 1
-  jumpForce: 300
+  jumpForce: 250
   onGround: 0
   canDestory: 1
   speedH: 2

@@ -7,17 +7,18 @@ using UnityEngine.UI;
 public class playerCtrl : MonoBehaviour
 {
 	//player need rigid body!
+	private void OnTriggerStay(Collider other)
+	{
+		onGround = true;
+	}
+
+	private void OnTriggerExit(Collider other)
+	{
+		onGround = false;
+	}
 
 	private void OnCollisionEnter(Collision collision)
 	{
-		switch (collision.transform.name)
-		{
-			case "Grass Block(Clone)":
-				onGround = true;
-				break;
-			default:
-				break;
-		}
 	}
 
 	private void RightMouseClick()
@@ -26,7 +27,12 @@ public class playerCtrl : MonoBehaviour
 		{
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit ray_cast_hit;
-			if (Physics.Raycast(ray, out ray_cast_hit, 16f, 2))
+
+
+			//ignore "ignore RayCast" layer
+			int raylayerMask = 1 << 2;
+			raylayerMask = ~raylayerMask;
+			if (Physics.Raycast(ray, out ray_cast_hit, 16f, raylayerMask))
 			{
 				Debug.Log("Rightclick: " + ray_cast_hit.collider.name);
 				rightClick = true;
@@ -42,13 +48,15 @@ public class playerCtrl : MonoBehaviour
 			Ray ray = Camera.main.ViewportPointToRay(new Vector2((float)0.5, (float)0.5));
 			RaycastHit rh;
 
-			if (Physics.Raycast(ray, out rh,16f, 0))//2:ignore RayCast
+			//ignore "ignore RayCast" layer
+			int raylayerMask = 1 << 2;
+			raylayerMask = ~raylayerMask;
+
+			if (Physics.Raycast(ray, out rh, float.PositiveInfinity, raylayerMask))//2:ignore RayCast
 			{
-				Debug.Log("click: " + rh.collider.name);
-				if (rh.collider.name == blockname)
+				if (rh.collider.name == blockname)//will be rh.collider.tag
 				{
 					Destroy(rh.collider.gameObject);
-
 				}
 			}
 		}
@@ -100,7 +108,8 @@ public class playerCtrl : MonoBehaviour
 		}
 		else
 		{
-			//GetComponent<Rigidbody>().velocity = Vector3.Normalize(playerFront(playerGoFront) + playerLeft(playerGoLeft)) * movingSpeed * Time.deltaTime*movingSpeedRateInAir;
+			Vector3 airSpeed = movingSpeedRate * ((playerFront(playerGoFront) + playerLeft(playerGoLeft)) * movingSpeed * Time.deltaTime * movingSpeedRateInAir + new Vector3(0, GetComponent<Rigidbody>().velocity.y, 0));
+			GetComponent<Rigidbody>().velocity = new Vector3(airSpeed.x, airSpeed.y, airSpeed.z);
 		}
 	}
 
@@ -233,7 +242,6 @@ public class playerCtrl : MonoBehaviour
 		if (lockMouse)
 		{
 			Cursor.lockState = CursorLockMode.Locked;
-			//GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY;
 			jumpControl();
 			moveControl();
 			headRotate();
@@ -244,7 +252,6 @@ public class playerCtrl : MonoBehaviour
 		else
 		{
 			Cursor.lockState = CursorLockMode.None;
-			//GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
 		}
 	}
 
@@ -257,7 +264,7 @@ public class playerCtrl : MonoBehaviour
 
 	[SerializeField] float movingSpeed = 10f;
 	[SerializeField] float movingSpeedRate = 1.0f;
-	//[SerializeField] float movingSpeedRateInAir = 0.3f;
+	[SerializeField] float movingSpeedRateInAir = 0.3f;
 	public float jumpForce = 1000f;
 
 	private bool rightClick = false;//true when player rightclick a block

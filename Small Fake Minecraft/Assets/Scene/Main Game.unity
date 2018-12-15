@@ -480,11 +480,11 @@ CapsuleCollider:
   m_GameObject: {fileID: 204598029}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
-  m_Radius: 0.56595445
-  m_Height: 2.0196037
+  m_Enabled: 1
+  m_Radius: 0.2706778
+  m_Height: 1.8872786
   m_Direction: 1
-  m_Center: {x: 0, y: 0.85959816, z: 0.105947495}
+  m_Center: {x: 0.01864916, y: 0.92576075, z: 0.105947495}
 --- !u!65 &204598035
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -493,7 +493,7 @@ BoxCollider:
   m_GameObject: {fileID: 204598029}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.5, y: 1.8372047, z: 0.5}
   m_Center: {x: 0, y: 0.8686024, z: 0}

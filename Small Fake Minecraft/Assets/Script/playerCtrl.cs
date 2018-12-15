@@ -69,6 +69,9 @@ public class playerCtrl : MonoBehaviour
 		{
 			yaw += speedH * Input.GetAxis("Mouse X");
 			pitch -= speedV * Input.GetAxis("Mouse Y");
+
+			yaw %= 360;
+			pitch %= 180;
 		}
 		transform.GetChild(0).eulerAngles = new Vector3(0, yaw, 0.0f);
 		transform.GetChild(0).GetChild(0).eulerAngles = new Vector3(pitch, yaw, 0.0f);
@@ -100,16 +103,18 @@ public class playerCtrl : MonoBehaviour
 
 	int playerGoFront = 0;
 	int playerGoLeft = 0;
+
+	Vector3 groundSpd;
 	private void playerWalk()
 	{
 		if (onGround)
 		{
-			GetComponent<Rigidbody>().velocity = (playerFront(playerGoFront) + playerLeft(playerGoLeft)) * movingSpeed * Time.deltaTime * movingSpeedRate;
+			GetComponent<Rigidbody>().velocity = groundSpd = (playerFront(playerGoFront) + playerLeft(playerGoLeft)).normalized * movingSpeed * movingSpeedRate;
+			Debug.Log(GetComponent<Rigidbody>().velocity.magnitude);
 		}
 		else
 		{
-			Vector3 airSpeed = (movingSpeedRate * (playerFront(playerGoFront) + playerLeft(playerGoLeft)) * movingSpeed * Time.deltaTime * movingSpeedRateInAir + new Vector3(0, GetComponent<Rigidbody>().velocity.y, 0));
-			GetComponent<Rigidbody>().velocity = new Vector3(airSpeed.x, airSpeed.y, airSpeed.z);
+			//maybe do something here?
 		}
 	}
 

@@ -12,6 +12,11 @@ public class playerCtrl : MonoBehaviour
 		onGround = true;
 	}
 
+	private void OnTriggerEnter(Collider other)
+	{
+		animator.SetBool("Jump", false);
+	}
+
 	private void OnTriggerExit(Collider other)
 	{
 		onGround = false;
@@ -21,6 +26,7 @@ public class playerCtrl : MonoBehaviour
 	{
 	}
 
+	/*
 	private void RightMouseClick()
 	{
 		if (Input.GetMouseButtonDown(1))
@@ -39,6 +45,7 @@ public class playerCtrl : MonoBehaviour
 			}
 		}
 	}
+	*/
 
 	private void tryDestoryBlock()
 	{
@@ -114,7 +121,6 @@ public class playerCtrl : MonoBehaviour
 		if (onGround)
 		{
 			GetComponent<Rigidbody>().velocity = groundSpd = (playerFront(playerGoFront) + playerLeft(playerGoLeft)).normalized * movingSpeed * movingSpeedRate;
-			Debug.Log(GetComponent<Rigidbody>().velocity.magnitude);
 		}
 		else
 		{
@@ -125,18 +131,17 @@ public class playerCtrl : MonoBehaviour
 	private void moveControl()
 	{
 
-		animator.SetBool("runForward", false);
-		animator.SetBool("runBackward", false);
+		animator.SetFloat("Speed", 0);
 		playerGoFront = playerGoLeft = 0;
 		if (Input.GetKey(KeyCode.W))
 		{
 			playerGoFront = 1;
-			animator.SetBool("runForward", true);
+			animator.SetFloat("Speed", GetComponent<Rigidbody>().velocity.magnitude);
 		}
 		else if (Input.GetKey(KeyCode.S))
 		{
 			playerGoFront = 2;
-			animator.SetBool("runBackward", true);
+			animator.SetFloat("Speed", GetComponent<Rigidbody>().velocity.magnitude * -1);
 		}
 
 		if (Input.GetKey(KeyCode.A))
@@ -166,6 +171,7 @@ public class playerCtrl : MonoBehaviour
 		{
 			GetComponent<Rigidbody>().AddForce(0, jumpForce * GetComponent<Rigidbody>().mass, 0);
 			onGround = false;
+			animator.SetBool("Jump", true);
 		}
 	}
 
@@ -255,7 +261,7 @@ public class playerCtrl : MonoBehaviour
 			moveControl();
 			headRotate();
 			tryDestoryBlock();
-			RightMouseClick();
+			//RightMouseClick();
 			commandInput();
 		}
 		else

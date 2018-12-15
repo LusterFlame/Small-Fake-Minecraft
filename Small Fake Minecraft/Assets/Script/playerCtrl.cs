@@ -54,9 +54,13 @@ public class playerCtrl : MonoBehaviour
 
 			if (Physics.Raycast(ray, out rh, float.PositiveInfinity, raylayerMask))//2:ignore RayCast
 			{
-				if (rh.collider.name == blockname)//will be rh.collider.tag
+				foreach (string blockname in blockList)
 				{
-					Destroy(rh.collider.gameObject);
+					if (rh.collider.name == blockname)//will be rh.collider.tag
+					{
+						Destroy(rh.collider.gameObject);
+						break;
+					}
 				}
 			}
 		}
@@ -261,7 +265,14 @@ public class playerCtrl : MonoBehaviour
 	}
 
 	/*↓ maybe change in the future*/
-	string blockname = "Grass Block(Clone)";//the name of gameobject that player can break
+	List<string> blockList = new List<string>()
+	{
+		"Grass Block(Clone)",
+		"Dirt Block(Clone)",
+		"Stone Block(Clone)",
+		"Oak Leaf Block(Clone)",
+		"Oaak Log Block(Clone)",
+	};
 
 
 	//public Vector3 moving_vector;
@@ -270,9 +281,9 @@ public class playerCtrl : MonoBehaviour
 	[SerializeField] float movingSpeed = 10f;
 	[SerializeField] float movingSpeedRate = 1.0f;
 	[SerializeField] float movingSpeedRateInAir = 0.3f;
-	public float jumpForce = 1000f;
+	public float jumpForce;
 
-	private bool rightClick = false;//true when player rightclick a block
+	private bool rightClick;//true when player rightclick a block
 
 	public bool onGround = false; //if player standing on ground
 	[SerializeField] bool canDestory = true; //if player can destroy blocks

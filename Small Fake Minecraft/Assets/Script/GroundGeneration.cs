@@ -9,6 +9,8 @@ public class GroundGeneration : MonoBehaviour {
 	public GameObject grass;
 	public GameObject dirt;
 	public GameObject stone;
+	public GameObject oakLeaves;
+	public GameObject oakLog;
 	private GameObject bedrockCollider;
 
 	// Use this for initialization
@@ -29,7 +31,10 @@ public class GroundGeneration : MonoBehaviour {
 		//place dirt blocks
 		placeGround(height);
 
-
+		//Place trees
+		placeTree(height);
+		//GameObject Block5 = Instantiate(oakLog);
+		//Block5.transform.position = new Vector3(10, 10, 10);
 	}
 
 	private void setHeight(int[,] height)
@@ -156,7 +161,7 @@ public class GroundGeneration : MonoBehaviour {
 			}
 
 		//Make it smoother
-		for(int temp = 0;temp < 3;++temp)
+		for(int temp = 0;temp < 5;++temp)
 			flattening(height);
 	}
 	private void flattening(int[,] height)
@@ -207,6 +212,23 @@ public class GroundGeneration : MonoBehaviour {
 				GameObject block3 = Instantiate(grass);
 				block3.transform.position = new Vector3(temp, height[temp + 31, temp2 + 31], temp2);
 			}
+	}
+	private void placeTree(int[,] height)
+	{
+		int TotalTree = Random.Range(10, 25);
+		for (int temp = 0;temp < TotalTree;++temp)
+		{
+			int TreeX = Random.Range(-29, 30);
+			int TreeZ = Random.Range(-29, 30);
+			int Baseheight = height[TreeX + 31, TreeZ + 31] + 1;
+			int TreeHeight = Random.Range(4, 8);
+			for (int temp2 = Baseheight;temp2 <= TreeHeight + Baseheight;++temp2)
+			{
+				Debug.Log("Placed 1 block");
+				GameObject Block5 = Instantiate(oakLog);
+				Block5.transform.position = new Vector3(TreeX, temp2, TreeZ);
+			}
+		}
 	}
 	
 	// Update is called once per frame

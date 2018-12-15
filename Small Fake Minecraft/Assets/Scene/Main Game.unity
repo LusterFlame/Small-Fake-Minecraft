@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -357,6 +357,8 @@ MonoBehaviour:
   grass: {fileID: 1271264497905964, guid: a6e29a0d282cf9849a1c769f6e3e8888, type: 2}
   dirt: {fileID: 1896348060928902, guid: 661bf33112a9a8743b3309b9016fdf67, type: 2}
   stone: {fileID: 1130487642329288, guid: f39424f02f39aa84294f0d9d89eeef6d, type: 2}
+  oakLeaves: {fileID: 1225366496649242, guid: 112754ae11ae05f4f9c52a304329286c, type: 2}
+  oakLog: {fileID: 1336502393618324, guid: e8cc73a9860cd7445ae8ab2fae966069, type: 2}
 --- !u!1 &128736824
 GameObject:
   m_ObjectHideFlags: 0
@@ -461,7 +463,7 @@ MonoBehaviour:
   movingSpeed: 150
   movingSpeedRate: 1
   movingSpeedRateInAir: 0.3
-  jumpForce: 200
+  jumpForce: 500
   onGround: 0
   canDestory: 1
   speedH: 2

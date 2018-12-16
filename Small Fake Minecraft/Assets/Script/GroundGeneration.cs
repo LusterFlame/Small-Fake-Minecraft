@@ -11,10 +11,12 @@ public class GroundGeneration : MonoBehaviour {
 	public GameObject stone;
 	public GameObject oakLeaves;
 	public GameObject oakLog;
+	public GameObject brichLeaves;
+	public GameObject brichLog;
 	private GameObject bedrockCollider;
 
 	// Use this for initialization
-	void Start () {
+	void Start() {
 
 		//Create Bedrock plane for bottom
 		bedrockCollider = new GameObject();
@@ -32,14 +34,13 @@ public class GroundGeneration : MonoBehaviour {
 		placeGround(height);
 
 		//Place trees
-		placeTree(height);
-		//GameObject Block5 = Instantiate(oakLog);
-		//Block5.transform.position = new Vector3(10, 10, 10);
+		placeTree(height, oakLog, oakLeaves);
+		placeTree(height, brichLog, brichLeaves);
 	}
 
 	private void setHeight(int[,] height)
 	{
-		height[0, 0] = Random.Range(1, 4);
+		height[0, 0] = Random.Range(4, 8);
 		for (int temp = 0; temp < 64; temp++)
 			for (int temp2 = 0; temp2 < 64; temp2++)
 			{
@@ -161,7 +162,7 @@ public class GroundGeneration : MonoBehaviour {
 			}
 
 		//Make it smoother
-		for(int temp = 0;temp < 5;++temp)
+		for (int temp = 0; temp < 5; ++temp)
 			flattening(height);
 	}
 	private void flattening(int[,] height)
@@ -204,7 +205,7 @@ public class GroundGeneration : MonoBehaviour {
 					GameObject block2 = Instantiate(stone);
 					block2.transform.position = new Vector3(temp, temp3, temp2);
 				}
-				for (int temp3 = height[temp + 31, temp2 + 31] - 1; temp3 < height[temp + 31, temp2 + 31]; ++temp3)
+				for (int temp3 = (height[temp + 31, temp2 + 31] - 1 == 1 ? height[temp + 31, temp2 + 31] : height[temp + 31, temp2 + 31] - 1);temp3 < height[temp + 31, temp2 + 31]; ++temp3)
 				{
 					GameObject block4 = Instantiate(dirt);
 					block4.transform.position = new Vector3(temp, temp3, temp2);
@@ -213,20 +214,75 @@ public class GroundGeneration : MonoBehaviour {
 				block3.transform.position = new Vector3(temp, height[temp + 31, temp2 + 31], temp2);
 			}
 	}
-	private void placeTree(int[,] height)
+	private void placeTree(int[,] height, GameObject WoodType, GameObject LeafType)
 	{
-		int TotalTree = Random.Range(10, 25);
-		for (int temp = 0;temp < TotalTree;++temp)
+		int TotalTree = Random.Range(8, 20);
+		for (int temp = 0; temp < TotalTree; ++temp)
 		{
 			int TreeX = Random.Range(-29, 30);
 			int TreeZ = Random.Range(-29, 30);
 			int Baseheight = height[TreeX + 31, TreeZ + 31] + 1;
-			int TreeHeight = Random.Range(4, 8);
-			for (int temp2 = Baseheight;temp2 <= TreeHeight + Baseheight;++temp2)
+			int TreeHeight = Random.Range(4, 6);
+			for (int temp2 = Baseheight; temp2 <= TreeHeight + Baseheight; ++temp2)
 			{
-				Debug.Log("Placed 1 block");
-				GameObject Block5 = Instantiate(oakLog);
+				GameObject Block5 = Instantiate(WoodType);
 				Block5.transform.position = new Vector3(TreeX, temp2, TreeZ);
+				switch (TreeHeight - (temp2 - Baseheight))
+				{
+					case 2:
+						PlaceLeaves(TreeX, TreeZ, temp2, 2, LeafType);
+						break;
+					case 1:
+						PlaceLeaves(TreeX, TreeZ, temp2, 1, LeafType);
+						break;
+					case 0:
+						PlaceLeaves(TreeX, TreeZ, temp2, 0, LeafType);
+						break;
+					default:
+						break;
+				}
+			}
+		}
+	}
+
+	private void PlaceLeaves(int TreeX, int TreeZ, int TreeY, int level, GameObject LeafType)
+	{
+		if (level <= 0)
+		{
+					for (int temp = 0; temp <= 1; ++temp)
+					{
+						GameObject Block10 = Instantiate(LeafType);
+						GameObject Block11 = Instantiate(LeafType);
+						GameObject Block12 = Instantiate(LeafType);
+						GameObject Block13 = Instantiate(LeafType);
+						Block10.transform.position = new Vector3(TreeX + 1, TreeY + temp, TreeZ);
+						Block11.transform.position = new Vector3(TreeX - 1, TreeY + temp, TreeZ);
+						Block12.transform.position = new Vector3(TreeX, TreeY + temp, TreeZ + 1);
+						Block13.transform.position = new Vector3(TreeX, TreeY + temp, TreeZ - 1);
+					}
+					GameObject Block14 = Instantiate(LeafType);
+					Block14.transform.position = new Vector3(TreeX, TreeY + 1, TreeZ);
+		}
+		else
+		{
+			for (int temp = 1; temp <= level; ++temp)
+				for (int temp2 = level * -1; temp2 <= level; ++temp2)
+				{
+					GameObject Block6 = Instantiate(oakLeaves);
+					Block6.transform.position = new Vector3(TreeX + temp, TreeY, TreeZ + temp2);
+				}
+			for (int temp = -1; temp * -1 <= level; --temp)
+				for (int temp2 = level * -1; temp2 <= level; ++temp2)
+				{
+					GameObject Block7 = Instantiate(oakLeaves);
+					Block7.transform.position = new Vector3(TreeX + temp, TreeY, TreeZ + temp2);
+				}
+			for (int temp = 1; temp <= level; ++temp)
+			{
+				GameObject Block8 = Instantiate(oakLeaves);
+				Block8.transform.position = new Vector3(TreeX, TreeY, TreeZ + temp);
+				GameObject Block9 = Instantiate(oakLeaves);
+				Block9.transform.position = new Vector3(TreeX, TreeY, TreeZ + temp * -1);
 			}
 		}
 	}

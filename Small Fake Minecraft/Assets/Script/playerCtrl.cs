@@ -55,10 +55,10 @@ public class playerCtrl : MonoBehaviour
 		}
 	}//use for animator
 
-	/*
+	
 	private void RightMouseClick()
 	{
-		if (Input.GetMouseButtonDown(1))
+/*		if (Input.GetMouseButtonDown(1))
 		{
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit ray_cast_hit;
@@ -69,12 +69,16 @@ public class playerCtrl : MonoBehaviour
 			raylayerMask = ~raylayerMask;
 			if (Physics.Raycast(ray, out ray_cast_hit, 16f, raylayerMask))
 			{
-				Debug.Log("Rightclick: " + ray_cast_hit.collider.name);
 				rightClick = true;
 			}
 		}
+		*/
+		if(Input.GetMouseButtonDown(1))
+		{
+			Ray Looking = Camera.main.ScreenPointToRay(Input.mousePosition);
+		}
 	}
-	*/
+	
 
 	private void tryDestoryBlock()
 	{
@@ -94,6 +98,38 @@ public class playerCtrl : MonoBehaviour
 				{
 					if (rh.collider.name == blockname)//will be rh.collider.tag
 					{
+						NewBlockName = rh.collider.name;
+						NewBlockPicked = false;
+						if (InventoryBlockName.Count == 0)
+						{
+							InventoryBlockName.Add(rh.collider.name);
+							InventoryBlockAmount.Add(1);
+						}
+						else
+						{
+							int ItemIndex = 0;
+							bool picked = false;
+							foreach (string BlockName in InventoryBlockName)
+							{
+							if (rh.collider.name == BlockName)
+								{
+									if (InventoryBlockAmount[ItemIndex] >= 64)
+										continue;
+									else
+									{
+										++InventoryBlockAmount[ItemIndex];
+										picked = !picked;
+									}
+										break;
+								}
+								++ItemIndex;
+							}
+							if (!picked && InventoryBlockName.Count < 9)
+							{
+								InventoryBlockName.Add(rh.collider.name);
+								InventoryBlockAmount.Add(1);
+							}
+						}
 						Destroy(rh.collider.gameObject);
 						break;
 					}
@@ -209,7 +245,6 @@ public class playerCtrl : MonoBehaviour
 	}
 
 	GameObject pauseCanvasClone;
-	GameObject hotbarCanvasClone;
 	GameObject keyTCanvasClone;
 	private bool keyT = false;
 	private void mouseCtrl()
@@ -227,14 +262,15 @@ public class playerCtrl : MonoBehaviour
 				{
 					Time.timeScale = 1f;
 					Destroy(pauseCanvasClone);
-					hotbarCanvasClone = Instantiate(hotbarCanvas, Vector2.zero, Quaternion.identity);
+					//hotbarCanvasClone = Instantiate(hotbarCanvas,new Vector (146, 44, 0), Quaternion.identity);
+					//hotbarCanvas = Instantiate(hotbarCanvas);
 				}
 			}
 			else
 			{
 				Time.timeScale = 0f;
 				pauseCanvasClone = Instantiate(pauseCanvas, Vector2.zero, Quaternion.identity);
-				Destroy(hotbarCanvasClone);
+				//Destroy(hotbarCanvas);
 			}
 		}
 
@@ -296,9 +332,9 @@ public class playerCtrl : MonoBehaviour
 
 	private void timeChange()
 	{
-		time+=Time.deltaTime;
+		time += Time.deltaTime; // * 100;
 		time %= 1200;
-		light.transform.rotation = Quaternion.Euler(time / 1200 * 360, 0, 0);
+		Light.transform.rotation = Quaternion.Euler(time / 1200 * 360, 0, 0);
 		Debug.Log((time / 1200) * 360);
 	}
 
@@ -309,14 +345,15 @@ public class playerCtrl : MonoBehaviour
 		inputField = keyTCanvas.gameObject.transform.GetChild(0).GetChild(1).gameObject;
 		animator = transform.GetChild(0).GetComponent<Animator>();
 		body = transform.GetChild(0).gameObject;
+		HotBarInventory = GameObject.FindGameObjectWithTag("Inventory");
 	}
 
 	// Use this for initialization
 	void Start()
 	{
-		Cursor.lockState = CursorLockMode.Locked;//lock mouse
-		hotbarCanvasClone = Instantiate(hotbarCanvas, Vector2.zero, Quaternion.identity);
-
+		//lock mouse
+		Cursor.lockState = CursorLockMode.Locked;
+		hotbarCanvas = Instantiate(hotbarCanvas);
 	}
 
 	// Update is called once per frame
@@ -330,7 +367,7 @@ public class playerCtrl : MonoBehaviour
 			moveControl();
 			headRotate();
 			tryDestoryBlock();
-			//RightMouseClick();
+			RightMouseClick();
 			commandInput();
 			prepareForFall();
 			spectChange();
@@ -340,6 +377,9 @@ public class playerCtrl : MonoBehaviour
 		{
 			Cursor.lockState = CursorLockMode.None;
 		}
+
+		if (transform.position.y < 0)
+			transform.position = new Vector3(10, 10, 10);
 	}
 
 	/*↓ maybe change in the future*/
@@ -349,9 +389,10 @@ public class playerCtrl : MonoBehaviour
 		"Dirt Block(Clone)",
 		"Stone Block(Clone)",
 		"Oak Leaf Block(Clone)",
-		"Oaak Log Block(Clone)",
+		"Oak Log Block(Clone)",
+		"Brich Leaf Block(Clone)",
+		"Brich Log Block(Clone)",
 	};
-
 
 	//public Vector3 moving_vector;
 	private MeshRenderer meshRenderer;
@@ -361,7 +402,16 @@ public class playerCtrl : MonoBehaviour
 	[SerializeField] float movingSpeedRateInAir = 0.3f;
 	public float jumpForce;
 
-	private bool rightClick;//true when player rightclick a block
+	//true when player rightclick a block
+	private bool rightClick;
+	//Ineventory
+	public List<String> InventoryBlockName;
+	public List<int> InventoryBlockAmount;
+	//For Picking New Block
+	public string NewBlockName;
+	public bool NewBlockPicked = true;
+	//For Placing block
+	GameObject HotBarInventory;
 
 	public bool onGround = false; //if player standing on ground
 	[SerializeField] bool canDestory = true; //if player can destroy blocks
@@ -378,12 +428,12 @@ public class playerCtrl : MonoBehaviour
 
 	[SerializeField] bool lockMouse = true;
 	public GameObject pauseCanvas;//Pause Canvas
-	public GameObject hotbarCanvas;
+	public Canvas hotbarCanvas;
 	public GameObject keyTCanvas;
 	private GameObject inputField;
 
 	private int spectMode = 0;
 
 	[SerializeField] float time = 6000;
-	[SerializeField] GameObject light;
+	[SerializeField] GameObject Light;
 }

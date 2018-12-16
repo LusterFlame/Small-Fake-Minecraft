@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class hotbar : MonoBehaviour {
 
@@ -13,9 +15,6 @@ public class hotbar : MonoBehaviour {
 		{
 			mouseWheelChange(-1);
 		}
-
-		GameObject selectSquare = transform.GetChild(0).gameObject;	
-		selectSquare.GetComponent<RectTransform>().transform.localPosition = new Vector3(-530.99f + selectItemSlot * 133, 0, 0);
 	}
 
 	private void mouseWheelChange(int value)
@@ -28,15 +27,135 @@ public class hotbar : MonoBehaviour {
 		}
 	}
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		select();
+	private void GetNewBlock()
+	{
+		string NewBlock = PlayerInventory.GetComponent<playerCtrl>().NewBlockName;
+		if (PlayerInventory.GetComponent<playerCtrl>().NewBlockPicked == false)
+		{
+			if (InventoryBlockName.Count == 0)
+			{
+				InventoryBlockName.Add(NewBlock);
+				InventoryBlockAmount.Add(1);
+			}
+			else
+			{
+				int ItemIndex = 0;
+				bool picked = false;
+				foreach (string BlockName in InventoryBlockName)
+				{
+					if (NewBlock == BlockName)
+					{
+						if (InventoryBlockAmount[ItemIndex] >= 64)
+						{
+							++ItemIndex;
+							continue;
+						}
+						else
+						{
+							++InventoryBlockAmount[ItemIndex];
+							picked = !picked;
+						}
+						break;
+					}
+					++ItemIndex;
+				}
+				if (!picked && InventoryBlockName.Count < 9)
+				{
+					InventoryBlockName.Add(NewBlock);
+					InventoryBlockAmount.Add(1);
+				}
+			}
+			PlayerInventory.GetComponent<playerCtrl>().NewBlockPicked = true;
+		}
 	}
 
-	[SerializeField] int selectItemSlot = 0;
+	private void CheckEmptyBlank()
+	{
+		for(int index = 0;index <= InventoryBlockName.Count - 1;++index)
+		{
+			if(InventoryBlockName[index] == null)
+			{
+				InventoryBlockName.RemoveAt(index);
+				InventoryBlockAmount.RemoveAt(index);
+				break;
+			}
+			++index;
+		}
+	}
+
+	void Awake()
+	{
+		PlayerInventory = GameObject.FindGameObjectWithTag("Player");
+	}
+
+	// Use this for initialization
+	void Start () {
+		for(int temp = 0;temp <= 8;++temp)
+		{
+			Item[temp] = Instantiate(Base);
+		}
+		HotBarSelected = Instantiate(HotBarSelected);
+		HotBarSelected.transform.SetParent(transform);
+		transform.position = new Vector3((Screen.width - 728) / 2, 88, 0);
+	}
+
+	// Update is called once per frame
+	void Update() {
+		select();
+		GetNewBlock();
+		CheckEmptyBlank();
+		RefreshHotBarImage();
+		HotBarSelected.transform.position = new Vector3((Screen.width - 728) / 2 + selectItemSlot * 80, 0, 0);
+	}
+
+	private void RefreshHotBarImage()
+	{
+		for(int temp = 0;temp <= InventoryBlockName.Count - 1; ++temp)
+		{
+			switch(InventoryBlockName[temp])
+			{
+				case "Grass Block(Clone)":
+					Item[temp].texture = Resources.Load<Texture>("Gui/GrassImage");
+					break;
+				case "Dirt Block(Clone)":
+					Item[temp].texture = Resources.Load<Texture>("Gui/DirtImage");
+					break;
+				case "Stone Block(Clone)":
+					Item[temp].texture = Resources.Load<Texture>("Gui/StoneBlockImage");
+					break;
+				case "Oak Leaf Block(Clone)":
+					Item[temp].texture = Resources.Load<Texture>("Gui/OakLeafImage");
+					break;
+				case "Oak Log Block(Clone)":
+					Item[temp].texture = Resources.Load<Texture>("Gui/OakLogImage");
+					break;
+				case "Brich Leaf Block(Clone)":
+					Item[temp].texture = Resources.Load<Texture>("Gui/BrichLeafImage");
+					break;
+				case "Brich Log Block(Clone)":
+					Item[temp].texture = Resources.Load<Texture>("Gui/BrichLogImage");
+					break;
+			}
+			Item[temp].transform.position = new Vector3((Screen.width - 728) / 2 + selectItemSlot * 80 + 3, 3, 0);
+		}
+	}
+
+	public int selectItemSlot;
+	public RawImage HotBarSelected;
+	private RectTransform HotBarRec;
+	public List<string> InventoryBlockName;
+	public List<int> InventoryBlockAmount;
+	GameObject PlayerInventory;
+
+	public RawImage Base;
+
+	/*public RawImage GrassBlock;
+	public RawImage StoneBlock;
+	public RawImage DirtBlock;
+	public RawImage OakLogBlock;
+	public RawImage OakLeafBlock;
+	public RawImage BrichLogBlock;
+	public RawImage BrichLeafBlock;*/
+
+	[SerializeField] private RawImage[] Item = new RawImage[9];
 }

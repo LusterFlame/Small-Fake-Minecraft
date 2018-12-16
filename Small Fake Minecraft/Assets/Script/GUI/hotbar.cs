@@ -92,7 +92,8 @@ public class hotbar : MonoBehaviour {
 	void Start () {
 		for(int temp = 0;temp <= 8;++temp)
 		{
-			Item[temp] = Instantiate(Base);
+			Item[temp] = Instantiate(Item[temp]);
+			Item[temp].transform.SetParent(transform);
 		}
 		HotBarSelected = Instantiate(HotBarSelected);
 		HotBarSelected.transform.SetParent(transform);
@@ -115,25 +116,25 @@ public class hotbar : MonoBehaviour {
 			switch(InventoryBlockName[temp])
 			{
 				case "Grass Block(Clone)":
-					Item[temp].texture = Resources.Load<Texture>("Gui/GrassImage");
+					Item[temp].texture = GrassBlock.texture;
 					break;
 				case "Dirt Block(Clone)":
-					Item[temp].texture = Resources.Load<Texture>("Gui/DirtImage");
+					Item[temp].texture = DirtBlock.texture;
 					break;
 				case "Stone Block(Clone)":
-					Item[temp].texture = Resources.Load<Texture>("Gui/StoneBlockImage");
+					Item[temp].texture = StoneBlock.texture;
 					break;
 				case "Oak Leaf Block(Clone)":
-					Item[temp].texture = Resources.Load<Texture>("Gui/OakLeafImage");
+					Item[temp].texture = OakLeafBlock.texture;
 					break;
 				case "Oak Log Block(Clone)":
-					Item[temp].texture = Resources.Load<Texture>("Gui/OakLogImage");
+					Item[temp].texture = OakLogBlock.texture;
 					break;
 				case "Brich Leaf Block(Clone)":
-					Item[temp].texture = Resources.Load<Texture>("Gui/BrichLeafImage");
+					Item[temp].texture = BrichLeafBlock.texture;
 					break;
 				case "Brich Log Block(Clone)":
-					Item[temp].texture = Resources.Load<Texture>("Gui/BrichLogImage");
+					Item[temp].texture = BrichLogBlock.texture;
 					break;
 			}
 			Item[temp].transform.position = new Vector3((Screen.width - 728) / 2 + selectItemSlot * 80 + 3, 3, 0);
@@ -149,13 +150,13 @@ public class hotbar : MonoBehaviour {
 
 	public RawImage Base;
 
-	/*public RawImage GrassBlock;
+	public RawImage GrassBlock;
 	public RawImage StoneBlock;
 	public RawImage DirtBlock;
 	public RawImage OakLogBlock;
 	public RawImage OakLeafBlock;
 	public RawImage BrichLogBlock;
-	public RawImage BrichLeafBlock;*/
+	public RawImage BrichLeafBlock;
 
 	[SerializeField] private RawImage[] Item = new RawImage[9];
 }

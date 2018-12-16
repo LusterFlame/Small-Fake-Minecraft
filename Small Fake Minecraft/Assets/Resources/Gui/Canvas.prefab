@@ -64,16 +64,30 @@ MonoBehaviour:
   InventoryBlockName: []
   InventoryBlockAmount: 
   Base: {fileID: 114560169367116318, guid: 77ff02adf98d1814f8a76070aa72a647, type: 2}
+  GrassBlock: {fileID: 114236599641612920, guid: 0cdecb839ed30b74992373f2c3495116,
+    type: 2}
+  StoneBlock: {fileID: 114619003075038592, guid: 359d854b399e1374699f33ac28285fcf,
+    type: 2}
+  DirtBlock: {fileID: 114465598370760180, guid: dbece8b35acf5ce4986f6954307145db,
+    type: 2}
+  OakLogBlock: {fileID: 114109631589673274, guid: 4b615156990fa6a4181b86b0f3da927b,
+    type: 2}
+  OakLeafBlock: {fileID: 114219049531091128, guid: 224b7417e7b70674fb970dcba883d0d2,
+    type: 2}
+  BrichLogBlock: {fileID: 114153324150422004, guid: 039f23886c0743c44aa1726a13e55c92,
+    type: 2}
+  BrichLeafBlock: {fileID: 114049976206246810, guid: ec3e8659e5e44b44fac1827dd214b4c5,
+    type: 2}
   Item:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 114560169367116318, guid: 77ff02adf98d1814f8a76070aa72a647, type: 2}
+  - {fileID: 114560169367116318, guid: 77ff02adf98d1814f8a76070aa72a647, type: 2}
+  - {fileID: 114560169367116318, guid: 77ff02adf98d1814f8a76070aa72a647, type: 2}
+  - {fileID: 114560169367116318, guid: 77ff02adf98d1814f8a76070aa72a647, type: 2}
+  - {fileID: 114560169367116318, guid: 77ff02adf98d1814f8a76070aa72a647, type: 2}
+  - {fileID: 114560169367116318, guid: 77ff02adf98d1814f8a76070aa72a647, type: 2}
+  - {fileID: 114560169367116318, guid: 77ff02adf98d1814f8a76070aa72a647, type: 2}
+  - {fileID: 114560169367116318, guid: 77ff02adf98d1814f8a76070aa72a647, type: 2}
+  - {fileID: 114560169367116318, guid: 77ff02adf98d1814f8a76070aa72a647, type: 2}
 --- !u!114 &114591470228752052
 MonoBehaviour:
   m_ObjectHideFlags: 1

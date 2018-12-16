@@ -22,9 +22,38 @@ public class playerCtrl : MonoBehaviour
 		onGround = false;
 	}
 
-	private void OnCollisionEnter(Collision collision)
+	private bool land = true;
+	private void prepareForFall()
 	{
-	}
+		if (land)
+		{
+			land = false;
+			Ray ray = new Ray(transform.position, new Vector3(0, -1, 0) + transform.position);
+
+			//ignore "ignore RayCast" layer
+			int raylayerMask = 1 << 2;
+			raylayerMask = ~raylayerMask;
+			if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), 0.8f, raylayerMask))
+			{
+				land = true;
+			}
+		}
+		else
+		{
+			Ray ray = new Ray(transform.position, new Vector3(0, -1, 0) + transform.position);
+			Debug.DrawLine(transform.position, new Vector3(0, -1, 0) + transform.position, Color.red);
+
+			//ignore "ignore RayCast" layer
+			int raylayerMask = 1 << 2;
+			raylayerMask = ~raylayerMask;
+			if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), 0.8f, raylayerMask))
+			{
+				land = true;
+				animator.SetBool("Jump", false);
+			}
+
+		}
+	}//use for animator
 
 	/*
 	private void RightMouseClick()
@@ -82,12 +111,14 @@ public class playerCtrl : MonoBehaviour
 			pitch -= speedV * Input.GetAxis("Mouse Y");
 
 			yaw %= 360;
-			pitch %= 180;
-		}
-		transform.GetChild(0).eulerAngles = new Vector3(0, yaw, 0.0f);
-		transform.GetChild(0).GetChild(0).eulerAngles = new Vector3(pitch, yaw, 0.0f);
-		//transform.GetChild(0).GetChild(1).GetChild(0).GetChild(2).GetChild(0).GetChild(1).GetChild(0).transform.eulerAngles = new Vector3(51.563f + pitch, -82.956f + yaw, 8.315f + 0.0f);//playerHead
+			pitch = pitch > 90 ? 90 : pitch;
+			pitch = pitch < -90 ? -90 : pitch;
 
+			transform.GetChild(0).eulerAngles = new Vector3(0, yaw, 0.0f);
+			transform.GetChild(0).GetChild(0).eulerAngles = new Vector3(pitch, yaw, 0.0f);
+
+			transform.GetChild(0).GetChild(1).GetChild(0).GetChild(2).GetChild(0).GetChild(0).GetChild(1).eulerAngles = new Vector3(pitch, yaw, 0.0f);//head
+		}
 	}
 
 	/*return the vector3 that player face to (is relative)*/
@@ -114,17 +145,16 @@ public class playerCtrl : MonoBehaviour
 
 	int playerGoFront = 0;
 	int playerGoLeft = 0;
-
-	Vector3 groundSpd;
+	
 	private void playerWalk()
 	{
 		if (onGround)
 		{
-			GetComponent<Rigidbody>().velocity = groundSpd = (playerFront(playerGoFront) + playerLeft(playerGoLeft)).normalized * movingSpeed * movingSpeedRate;
+			GetComponent<Rigidbody>().velocity = (playerFront(playerGoFront) + playerLeft(playerGoLeft)).normalized * movingSpeed * movingSpeedRate;
 		}
-		else
+		else if (GetComponent<Rigidbody>().velocity.y < 0.5f && GetComponent<Rigidbody>().velocity.magnitude < 0.8f)
 		{
-			//maybe do something here?
+			GetComponent<Rigidbody>().velocity += (playerFront(playerGoFront) + playerLeft(playerGoLeft)).normalized * movingSpeed * movingSpeedRate * movingSpeedRateInAir;
 		}
 	}
 
@@ -136,21 +166,23 @@ public class playerCtrl : MonoBehaviour
 		if (Input.GetKey(KeyCode.W))
 		{
 			playerGoFront = 1;
-			animator.SetFloat("Speed", GetComponent<Rigidbody>().velocity.magnitude);
+			animator.SetFloat("Speed", 1);
 		}
 		else if (Input.GetKey(KeyCode.S))
 		{
 			playerGoFront = 2;
-			animator.SetFloat("Speed", GetComponent<Rigidbody>().velocity.magnitude * -1);
+			animator.SetFloat("Speed", -1);
 		}
 
 		if (Input.GetKey(KeyCode.A))
 		{
 			playerGoLeft = 1;
+			animator.SetFloat("Speed", 1);
 		}
 		else if (Input.GetKey(KeyCode.D))
 		{
 			playerGoLeft = 2;
+			animator.SetFloat("Speed", 1);
 		}
 
 		if (Input.GetKey(KeyCode.LeftShift))
@@ -169,7 +201,8 @@ public class playerCtrl : MonoBehaviour
 	{
 		if (Input.GetKey(KeyCode.Space) && onGround)
 		{
-			GetComponent<Rigidbody>().AddForce(0, jumpForce * GetComponent<Rigidbody>().mass, 0);
+			//GetComponent<Rigidbody>().AddForce(0, jumpForce * GetComponent<Rigidbody>().mass, 0);
+			GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x, jumpForce, GetComponent<Rigidbody>().velocity.z);
 			onGround = false;
 			animator.SetBool("Jump", true);
 		}
@@ -235,11 +268,47 @@ public class playerCtrl : MonoBehaviour
 		}
 	}
 
+	private void spectChange()
+	{
+		if (Input.GetKeyDown(KeyCode.F5))
+		{
+			switch (++spectMode)
+			{
+				case 0:
+					transform.GetChild(0).GetChild(0).GetChild(0).transform.localPosition = new Vector3(0, 0, -2);
+					transform.GetChild(0).GetChild(0).GetChild(0).localRotation = new Quaternion(0, 0, 0, 0);
+					break;
+				case 1:
+					transform.GetChild(0).GetChild(0).GetChild(0).transform.localPosition = new Vector3(0, 0, 0);
+
+					int tar = 1 << 2;
+					transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Camera>().cullingMask = ~tar;
+					break;
+				case 2:
+					transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Camera>().cullingMask += 1 << 2;
+					transform.GetChild(0).GetChild(0).GetChild(0).transform.localPosition = new Vector3(0, 0, 2f);
+					transform.GetChild(0).GetChild(0).GetChild(0).localRotation = new Quaternion(0, 180, 0, 0);
+					spectMode = -1;
+					break;
+			}
+		}
+	}
+
+	private void timeChange()
+	{
+		time+=Time.deltaTime;
+		time %= 1200;
+		light.transform.rotation = Quaternion.Euler(time / 1200 * 360, 0, 0);
+		Debug.Log((time / 1200) * 360);
+	}
+
+	GameObject body;
 	private void Awake()
 	{
 		/*related to GetChild*/
 		inputField = keyTCanvas.gameObject.transform.GetChild(0).GetChild(1).gameObject;
 		animator = transform.GetChild(0).GetComponent<Animator>();
+		body = transform.GetChild(0).gameObject;
 	}
 
 	// Use this for initialization
@@ -263,6 +332,9 @@ public class playerCtrl : MonoBehaviour
 			tryDestoryBlock();
 			//RightMouseClick();
 			commandInput();
+			prepareForFall();
+			spectChange();
+			timeChange();
 		}
 		else
 		{
@@ -300,8 +372,8 @@ public class playerCtrl : MonoBehaviour
 	public float speedH = 2.0f;
 	public float speedV = 2.0f;
 
-	private float yaw = 0.0f;
-	private float pitch = 0.0f;
+	[SerializeField] float yaw = 0.0f;
+	[SerializeField] float pitch = 0.0f;
 	///
 
 	[SerializeField] bool lockMouse = true;
@@ -309,4 +381,9 @@ public class playerCtrl : MonoBehaviour
 	public GameObject hotbarCanvas;
 	public GameObject keyTCanvas;
 	private GameObject inputField;
+
+	private int spectMode = 0;
+
+	[SerializeField] float time = 6000;
+	[SerializeField] GameObject light;
 }

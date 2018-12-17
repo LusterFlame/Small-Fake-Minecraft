@@ -66,7 +66,7 @@ MonoBehaviour:
   Base: {fileID: 114560169367116318, guid: 77ff02adf98d1814f8a76070aa72a647, type: 2}
   GrassBlock: {fileID: 114236599641612920, guid: 0cdecb839ed30b74992373f2c3495116,
     type: 2}
-  StoneBlock: {fileID: 114619003075038592, guid: 359d854b399e1374699f33ac28285fcf,
+  StoneBlock: {fileID: 114308411265347988, guid: 359d854b399e1374699f33ac28285fcf,
     type: 2}
   DirtBlock: {fileID: 114465598370760180, guid: dbece8b35acf5ce4986f6954307145db,
     type: 2}

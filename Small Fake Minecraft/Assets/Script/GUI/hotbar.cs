@@ -94,6 +94,7 @@ public class hotbar : MonoBehaviour {
 		{
 			Item[temp] = Instantiate(Item[temp]);
 			Item[temp].transform.SetParent(transform);
+			Item[temp].transform.position = new Vector3(temp * 80 + 19, Item[temp].transform.parent.position.y - 19, 100);
 		}
 		HotBarSelected = Instantiate(HotBarSelected);
 		HotBarSelected.transform.SetParent(transform);
@@ -136,8 +137,10 @@ public class hotbar : MonoBehaviour {
 				case "Brich Log Block(Clone)":
 					Item[temp].texture = BrichLogBlock.texture;
 					break;
+				default:
+					Item[temp].texture = Base.texture;
+					break;
 			}
-			Item[temp].transform.position = new Vector3((Screen.width - 728) / 2 + selectItemSlot * 80 + 3, 3, 0);
 		}
 	}
 

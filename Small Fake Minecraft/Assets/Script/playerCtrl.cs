@@ -29,7 +29,6 @@ public class playerCtrl : MonoBehaviour
 		if (land)
 		{
 			land = false;
-			Ray ray = new Ray(transform.position, new Vector3(0, -1, 0) + transform.position);
 
 			//ignore "ignore RayCast" layer
 			int raylayerMask = 1 << 2;
@@ -41,7 +40,6 @@ public class playerCtrl : MonoBehaviour
 		}
 		else
 		{
-			Ray ray = new Ray(transform.position, new Vector3(0, -1, 0) + transform.position);
 			Debug.DrawLine(transform.position, new Vector3(0, -1, 0) + transform.position, Color.red);
 
 			//ignore "ignore RayCast" layer
@@ -439,20 +437,17 @@ public class playerCtrl : MonoBehaviour
 
 	private void timeChange()
 	{
-		time += Time.deltaTime * 2;
+		time += Time.deltaTime * 3;
 		time %= 1200;
 		Light.transform.rotation = Quaternion.Euler(new Vector3(((int)time / 5 * 1.5f), 0, 0));
-		//Debug.Log(time);
 	}
 
-	//GameObject body;
 	private void Awake()
 	{
 		/*related to GetChild*/
 		hotbarCanvas = Instantiate(hotbarCanvas);
 		inputField = keyTCanvas.gameObject.transform.GetChild(0).GetChild(1).gameObject;
 		animator = transform.GetChild(0).GetComponent<Animator>();
-		//body = transform.GetChild(0).gameObject;
 		HotBarInventory = GameObject.Find("HotBar");
 		BlockList = GameObject.FindGameObjectWithTag("map");
 	}
@@ -460,7 +455,6 @@ public class playerCtrl : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-		//lock mouse
 		Cursor.lockState = CursorLockMode.Locked;
 	}
 
@@ -491,7 +485,6 @@ public class playerCtrl : MonoBehaviour
 			transform.position = new Vector3(10, 10, 10);
 	}
 
-	/*↓ maybe change in the future*/
 	List<string> blockList = new List<string>()
 	{
 		"Grass Block(Clone)",
@@ -507,7 +500,6 @@ public class playerCtrl : MonoBehaviour
 		"Diorite Block(Clone)"
 	};
 
-	//public Vector3 moving_vector;
 	private MeshRenderer meshRenderer;
 
 	[SerializeField]
@@ -536,7 +528,6 @@ public class playerCtrl : MonoBehaviour
 
 	Animator animator;
 
-	///
 	public float speedH = 2.0f;
 	public float speedV = 2.0f;
 
@@ -544,7 +535,6 @@ public class playerCtrl : MonoBehaviour
 	float yaw = 0.0f;
 	[SerializeField]
 	float pitch = 0.0f;
-	///
 
 	[SerializeField]
 	bool lockMouse = true;

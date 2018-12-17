@@ -205,6 +205,7 @@ public class GroundGeneration : MonoBehaviour {
 		for (int temp = -31; temp <= 32; ++temp)
 			for (int temp2 = -31; temp2 <= 32; ++temp2)
 			{
+				Debug.Log(temp.ToString() + "is temp and" + temp2.ToString() + "is temp2");
 				if (height[temp + 31, temp2 + 31] > 1)
 				{
 					if(height[temp + 31, temp2 + 31] > 2)
@@ -220,6 +221,7 @@ public class GroundGeneration : MonoBehaviour {
 				}
 				GameObject block3 = Instantiate(grass);
 				block3.transform.position = new Vector3(temp, height[temp + 31, temp2 + 31], temp2);
+				Debug.Log("is it before the error mesg?");
 			}
 	}
 	private void placeTree(int[,] height, GameObject WoodType, GameObject LeafType)
@@ -227,24 +229,26 @@ public class GroundGeneration : MonoBehaviour {
 		int TotalTree = Random.Range(8, 20);
 		for (int temp = 0; temp < TotalTree; ++temp)
 		{
-			int TreeX = Random.Range(-29, 30);
-			int TreeZ = Random.Range(-29, 30);
-			int Baseheight = height[TreeX + 31, TreeZ + 31] + 1;
+			Debug.Log("This is the " + (temp + 1).ToString() + "tree");
+			int TreeX = Random.Range(-29, 30) + 31;
+			int TreeZ = Random.Range(-29, 30) + 31;
+			Debug.Log("TreeX is " + TreeX.ToString() + "and TreeZ is " + TreeZ.ToString());
+			int Baseheight = height[TreeX, TreeZ] + 1;
 			int TreeHeight = Random.Range(4, 6);
 			for (int temp2 = Baseheight; temp2 <= TreeHeight + Baseheight; ++temp2)
 			{
 				GameObject Block5 = Instantiate(WoodType);
-				Block5.transform.position = new Vector3(TreeX, temp2, TreeZ);
+				Block5.transform.position = new Vector3(TreeX - 31, temp2, TreeZ - 31);
 				switch (TreeHeight - (temp2 - Baseheight))
 				{
 					case 2:
-						PlaceLeaves(TreeX, TreeZ, temp2, 2, LeafType);
+						PlaceLeaves(TreeX - 31, TreeZ - 31, temp2, 2, LeafType);
 						break;
 					case 1:
-						PlaceLeaves(TreeX, TreeZ, temp2, 1, LeafType);
+						PlaceLeaves(TreeX - 31, TreeZ - 31, temp2, 1, LeafType);
 						break;
 					case 0:
-						PlaceLeaves(TreeX, TreeZ, temp2, 0, LeafType);
+						PlaceLeaves(TreeX - 31, TreeZ - 31, temp2, 0, LeafType);
 						break;
 					default:
 						break;
@@ -276,20 +280,20 @@ public class GroundGeneration : MonoBehaviour {
 			for (int temp = 1; temp <= level; ++temp)
 				for (int temp2 = level * -1; temp2 <= level; ++temp2)
 				{
-					GameObject Block6 = Instantiate(oakLeaves);
+					GameObject Block6 = Instantiate(LeafType);
 					Block6.transform.position = new Vector3(TreeX + temp, TreeY, TreeZ + temp2);
 				}
 			for (int temp = -1; temp * -1 <= level; --temp)
 				for (int temp2 = level * -1; temp2 <= level; ++temp2)
 				{
-					GameObject Block7 = Instantiate(oakLeaves);
+					GameObject Block7 = Instantiate(LeafType);
 					Block7.transform.position = new Vector3(TreeX + temp, TreeY, TreeZ + temp2);
 				}
 			for (int temp = 1; temp <= level; ++temp)
 			{
-				GameObject Block8 = Instantiate(oakLeaves);
+				GameObject Block8 = Instantiate(LeafType);
 				Block8.transform.position = new Vector3(TreeX, TreeY, TreeZ + temp);
-				GameObject Block9 = Instantiate(oakLeaves);
+				GameObject Block9 = Instantiate(LeafType);
 				Block9.transform.position = new Vector3(TreeX, TreeY, TreeZ + temp * -1);
 			}
 		}

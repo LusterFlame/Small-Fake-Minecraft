@@ -55,7 +55,6 @@ public class playerCtrl : MonoBehaviour
 		}
 	}//use for animator
 
-
 	private void RightMouseClick()
 	{
 		if (Input.GetMouseButtonDown(1))
@@ -63,7 +62,7 @@ public class playerCtrl : MonoBehaviour
 			Ray Looking = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit LookingDirection;
 			int rayLayerMask = ~(1 << 2);
-			if (Physics.Raycast(Looking, out LookingDirection, 5.0f, rayLayerMask))
+			if (Physics.Raycast(Looking, out LookingDirection,spectMode==0?8.0f: 5.0f, rayLayerMask))
 			{
 				int choosingItem = HotBarInventory.GetComponent<hotbar>().selectItemSlot;
 				if (LookingDirection.point.x - LookingDirection.collider.transform.position.x

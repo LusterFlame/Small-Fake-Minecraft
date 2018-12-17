@@ -14,6 +14,9 @@ public class GroundGeneration : MonoBehaviour {
 	public GameObject brichLeaves;
 	public GameObject brichLog;
 	public GameObject sand;
+	public GameObject andesite;
+	public GameObject diorite;
+	public GameObject granite;
 	private GameObject bedrockCollider;
 	[SerializeField] private int[,] height;
 
@@ -39,7 +42,7 @@ public class GroundGeneration : MonoBehaviour {
 		placeGround(height);
 
 		//Random sands
-		for (int temp = 0; temp <= 12; ++temp)
+		for (int temp = 0; temp <= 19; ++temp)
 		{
 			PlaceSand(height, Random.Range(-25, 25), Random.Range(-25, 25));
 		}
@@ -51,7 +54,7 @@ public class GroundGeneration : MonoBehaviour {
 
 	private void setHeight(int[,] height)
 	{
-		height[0, 0] = Random.Range(2, 6);
+		height[0, 0] = Random.Range(4, 12);
 		for (int temp = 0; temp < 64; temp++)
 			for (int temp2 = 0; temp2 < 64; temp2++)
 			{
@@ -217,7 +220,28 @@ public class GroundGeneration : MonoBehaviour {
 					{
 						for (int temp3 = 1; temp3 < height[temp + 31, temp2 + 31] - 1; ++temp3)
 						{
-							GameObject block2 = Instantiate(stone);
+							GameObject block2;
+							switch(Random.Range(0, 7))
+							{
+								case 0:
+								case 4:
+								case 5:
+								case 6:
+									block2 = Instantiate(stone);
+									break;
+								case 1:
+									block2 = Instantiate(diorite);
+									break;
+								case 2:
+									block2 = Instantiate(andesite);
+									break;
+								case 3:
+									block2 = Instantiate(granite);
+									break;
+								default:
+									block2 = Instantiate(stone);
+									break;
+							}
 							block2.transform.position = new Vector3(temp, temp3, temp2);
 						}
 					}
@@ -306,26 +330,13 @@ public class GroundGeneration : MonoBehaviour {
 
 	private void PlaceSand(int[,] height, int SandX, int SandZ)
 	{
-		++height[SandX + 31, SandZ + 31];
-		GameObject Block16 = Instantiate(sand);
-		Debug.Log(height[SandX + 31, SandZ + 31].ToString());
-		Block16.transform.position = new Vector3(SandX, height[SandX + 31, SandZ + 31], SandZ);
-		if(SandX + 1 < 32 && Random.Range(0, 4) == 0)
-		{
-			PlaceSand(height, SandX + 1, SandZ);
-		}
-		else if (SandX - 1 > -31 && Random.Range(0, 4) == 0)
-		{
-			PlaceSand(height, SandX - 1, SandZ);
-		}
-		else if(SandZ + 1 < 32 && Random.Range(0, 4) == 0)
-		{
-			PlaceSand(height, SandX, SandZ + 1);
-		}
-		else if(SandZ - 1 > -31 && Random.Range(0, 4) == 0)
-		{
-			PlaceSand(height, SandX, SandZ - 1);
-		}
+		for(int temp = -1;temp < 2;++temp)
+			for(int temp2 = -1;temp2 < 2;++temp2)
+			{
+				++height[SandX + 31 + temp, SandZ + 31 + temp2];
+				GameObject Block16 = Instantiate(sand);
+				Block16.transform.position = new Vector3(SandX + temp, height[SandX + 31 + temp, SandZ + 31 + temp2] + 1, SandZ + temp2);
+			}
 	}
 	
 	// Update is called once per frame

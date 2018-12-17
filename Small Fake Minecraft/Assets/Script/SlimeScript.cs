@@ -22,6 +22,7 @@ public class SlimeScript : MonoBehaviour {
 		if(count == 120)
 		{
 			GetComponent<Rigidbody>().AddForce(toward.x, 15, toward.z);
+			GetComponent<AudioSource>().Play();
 			count = 0;
 		}
 

@@ -80,6 +80,12 @@ MonoBehaviour:
     type: 2}
   SandBlock: {fileID: 114031809792402754, guid: ebc6ccc8964a63a4fb85b628a6706aa5,
     type: 2}
+  AndesiteBlock: {fileID: 114924480298589296, guid: f99cee1792aa8444c93f5df61d431f87,
+    type: 2}
+  GraniteBlock: {fileID: 114163810906110836, guid: 7f949b474f258e54f84e78a101fa81e4,
+    type: 2}
+  DioriteBlock: {fileID: 114224270195947622, guid: 2d3b648a7b23e564eada2d6671db197b,
+    type: 2}
   Item:
   - {fileID: 114383751334332868, guid: 77ff02adf98d1814f8a76070aa72a647, type: 2}
   - {fileID: 114383751334332868, guid: 77ff02adf98d1814f8a76070aa72a647, type: 2}

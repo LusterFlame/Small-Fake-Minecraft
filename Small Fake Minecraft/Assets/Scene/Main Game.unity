@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -292,6 +292,9 @@ MonoBehaviour:
     type: 2}
   brichLog: {fileID: 1212049066029252, guid: 2448f226bfa46954d9d334a743f1287c, type: 2}
   sand: {fileID: 1504488041741530, guid: 82917be56c7d81d4fb82fe7d8bbde9d1, type: 2}
+  andesite: {fileID: 1126906950592440, guid: 49b0250cc1226004e89859dc1531adb1, type: 2}
+  diorite: {fileID: 1608932600551414, guid: 46fb7f4df777aff448b389ed4aff8d3e, type: 2}
+  granite: {fileID: 1528670817564744, guid: 44c9fd8508968894ea20529df21a1360, type: 2}
 --- !u!1 &204598029
 GameObject:
   m_ObjectHideFlags: 0

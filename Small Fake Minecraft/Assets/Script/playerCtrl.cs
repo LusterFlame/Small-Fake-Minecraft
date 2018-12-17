@@ -145,6 +145,15 @@ public class playerCtrl : MonoBehaviour
 				case "Sand Block(Clone)":
 					BlockNewPlaced = Instantiate(BlockList.GetComponent<GroundGeneration>().sand);
 					break;
+				case "Andesite Block(Clone)":
+					BlockNewPlaced = Instantiate(BlockList.GetComponent<GroundGeneration>().andesite);
+					break;
+				case "Diorite Block(Clone)":
+					BlockNewPlaced = Instantiate(BlockList.GetComponent<GroundGeneration>().diorite);
+					break;
+				case "Granite Block(Clone)":
+					BlockNewPlaced = Instantiate(BlockList.GetComponent<GroundGeneration>().granite);
+					break;
 				default:
 					BlockNewPlaced = null;
 					break;
@@ -169,7 +178,6 @@ public class playerCtrl : MonoBehaviour
 	{
 		if (Input.GetMouseButtonDown(0) && canDestory)
 		{
-			//Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			Ray ray = Camera.main.ViewportPointToRay(new Vector2((float)0.5, (float)0.5));
 			RaycastHit rh;
 
@@ -324,7 +332,6 @@ public class playerCtrl : MonoBehaviour
 	{
 		if (Input.GetKey(KeyCode.Space) && onGround)
 		{
-			//GetComponent<Rigidbody>().AddForce(0, jumpForce * GetComponent<Rigidbody>().mass, 0);
 			GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x, jumpForce, GetComponent<Rigidbody>().velocity.z);
 			onGround = false;
 			animator.SetBool("Jump", true);
@@ -339,7 +346,8 @@ public class playerCtrl : MonoBehaviour
 			Vector3 bounceDirection = transform.position - obj.collider.transform.position;
 			GetComponent<Rigidbody>().AddForce(bounceDirection.x * 550, 250, bounceDirection.z * 550, ForceMode.Impulse);
 			GetComponent<AudioSource>().Play();
-
+			DateTime ts = DateTime.Now + TimeSpan.FromSeconds(1);
+			do { } while (DateTime.Now < ts);
 			Cursor.lockState = CursorLockMode.None;
 			UnityEngine.SceneManagement.SceneManager.LoadScene(0);
 		}
@@ -363,8 +371,6 @@ public class playerCtrl : MonoBehaviour
 				{
 					Time.timeScale = 1f;
 					Destroy(pauseCanvasClone);
-					//hotbarCanvasClone = Instantiate(hotbarCanvas,new Vector (146, 44, 0), Quaternion.identity);
-					//hotbarCanvas = Instantiate(hotbarCanvas);
 				}
 			}
 			else
@@ -433,7 +439,7 @@ public class playerCtrl : MonoBehaviour
 
 	private void timeChange()
 	{
-		time += Time.deltaTime * 30;
+		time += Time.deltaTime * 2;
 		time %= 1200;
 		Light.transform.rotation = Quaternion.Euler(new Vector3(((int)time / 5 * 1.5f), 0, 0));
 		//Debug.Log(time);
@@ -495,7 +501,10 @@ public class playerCtrl : MonoBehaviour
 		"Oak Log Block(Clone)",
 		"Brich Leaf Block(Clone)",
 		"Brich Log Block(Clone)",
-		"Sand Block(Clone)"
+		"Sand Block(Clone)",
+		"Andesite Block(Clone)",
+		"Granite Block(Clone)",
+		"Diorite Block(Clone)"
 	};
 
 	//public Vector3 moving_vector;

@@ -40,7 +40,7 @@ public class GroundGeneration : MonoBehaviour {
 
 	private void setHeight(int[,] height)
 	{
-		height[0, 0] = Random.Range(4, 8);
+		height[0, 0] = Random.Range(1, 4);
 		for (int temp = 0; temp < 64; temp++)
 			for (int temp2 = 0; temp2 < 64; temp2++)
 			{
@@ -160,9 +160,14 @@ public class GroundGeneration : MonoBehaviour {
 					}
 				}
 			}
-
+		for(int temp = 0;temp < 64;++temp)
+			for(int temp2 = 0;temp2 < 64;++temp2)
+			{
+				if (height[temp, temp2] > 5)
+					height[temp, temp2] = 5;
+			}
 		//Make it smoother
-		for (int temp = 0; temp < 5; ++temp)
+		for (int temp = 0; temp < 10; ++temp)
 			flattening(height);
 	}
 	private void flattening(int[,] height)
@@ -200,15 +205,18 @@ public class GroundGeneration : MonoBehaviour {
 		for (int temp = -31; temp <= 32; ++temp)
 			for (int temp2 = -31; temp2 <= 32; ++temp2)
 			{
-				for (int temp3 = 1; temp3 < height[temp + 31, temp2 + 31] - 1; ++temp3)
+				if (height[temp + 31, temp2 + 31] > 1)
 				{
-					GameObject block2 = Instantiate(stone);
-					block2.transform.position = new Vector3(temp, temp3, temp2);
-				}
-				for (int temp3 = (height[temp + 31, temp2 + 31] - 1 == 1 ? height[temp + 31, temp2 + 31] : height[temp + 31, temp2 + 31] - 1);temp3 < height[temp + 31, temp2 + 31]; ++temp3)
-				{
+					if(height[temp + 31, temp2 + 31] > 2)
+					{
+						for (int temp3 = 1; temp3 < height[temp + 31, temp2 + 31] - 1; ++temp3)
+						{
+							GameObject block2 = Instantiate(stone);
+							block2.transform.position = new Vector3(temp, temp3, temp2);
+						}
+					}
 					GameObject block4 = Instantiate(dirt);
-					block4.transform.position = new Vector3(temp, temp3, temp2);
+					block4.transform.position = new Vector3(temp, height[temp + 31, temp2 + 31] - 1, temp2);
 				}
 				GameObject block3 = Instantiate(grass);
 				block3.transform.position = new Vector3(temp, height[temp + 31, temp2 + 31], temp2);

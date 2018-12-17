@@ -58,6 +58,7 @@
      <Compile Include="Assets\Script\menu\backToTitle.cs" />
      <Compile Include="Assets\Script\menu\endGame.cs" />
      <Compile Include="Assets\Script\menu\startGame.cs" />
+     <Compile Include="Assets\Script\MonsterGeneration.cs" />
      <Compile Include="Assets\Script\playerCtrl.cs" />
      <None Include="Assets\Resources\char\UnityChan\Models\UnityChanShader\Shader\Unitychan_chara_eye.shader" />
      <None Include="Assets\Resources\char\UnityChan\Models\UnityChanShader\Shader\Unitychan_chara_fuku.shader" />

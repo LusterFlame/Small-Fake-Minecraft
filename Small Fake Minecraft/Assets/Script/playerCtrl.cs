@@ -55,30 +55,100 @@ public class playerCtrl : MonoBehaviour
 		}
 	}//use for animator
 
-	
+
 	private void RightMouseClick()
 	{
-/*		if (Input.GetMouseButtonDown(1))
-		{
-			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-			RaycastHit ray_cast_hit;
+		/*		if (Input.GetMouseButtonDown(1))
+				{
+					Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+					RaycastHit ray_cast_hit;
 
 
-			//ignore "ignore RayCast" layer
-			int raylayerMask = 1 << 2;
-			raylayerMask = ~raylayerMask;
-			if (Physics.Raycast(ray, out ray_cast_hit, 16f, raylayerMask))
-			{
-				rightClick = true;
-			}
-		}
-		*/
-		if(Input.GetMouseButtonDown(1))
+					//ignore "ignore RayCast" layer
+					int raylayerMask = 1 << 2;
+					raylayerMask = ~raylayerMask;
+					if (Physics.Raycast(ray, out ray_cast_hit, 16f, raylayerMask))
+					{
+						rightClick = true;
+					}
+				}
+				*/
+		if (Input.GetMouseButtonDown(1))
 		{
 			Ray Looking = Camera.main.ScreenPointToRay(Input.mousePosition);
+			RaycastHit LookingDirection;
+			int rayLayerMask = ~(1 << 2);
+			if (Physics.Raycast(Looking, out LookingDirection, 5.0f, rayLayerMask))
+			{
+				int choosingItem = HotBarInventory.GetComponent<hotbar>().selectItemSlot;
+				if (LookingDirection.point.x - LookingDirection.collider.transform.position.x
+					== LookingDirection.collider.transform.localScale.x / 2)
+				{
+					ChooseBlockToPlace(choosingItem, new Vector3(LookingDirection.collider.transform.position.x + 1, LookingDirection.collider.transform.position.y, LookingDirection.collider.transform.position.z));
+				}
+				else if (LookingDirection.point.x - LookingDirection.collider.transform.position.x
+					== -(LookingDirection.collider.transform.localScale.x / 2))
+				{
+					ChooseBlockToPlace(choosingItem, new Vector3(LookingDirection.collider.transform.position.x - 1, LookingDirection.collider.transform.position.y, LookingDirection.collider.transform.position.z));
+				}
+				else if (LookingDirection.point.y - LookingDirection.collider.transform.position.y
+					== LookingDirection.collider.transform.localScale.y / 2)
+				{
+					ChooseBlockToPlace(choosingItem, new Vector3(LookingDirection.collider.transform.position.x, LookingDirection.collider.transform.position.y + 1, LookingDirection.collider.transform.position.z));
+				}
+				else if (LookingDirection.point.y - LookingDirection.collider.transform.position.y
+					== -(LookingDirection.collider.transform.localScale.y / 2))
+				{
+					ChooseBlockToPlace(choosingItem, new Vector3(LookingDirection.collider.transform.position.x, LookingDirection.collider.transform.position.y - 1, LookingDirection.collider.transform.position.z));
+				}
+				else if (LookingDirection.point.z - LookingDirection.collider.transform.position.z
+					== LookingDirection.collider.transform.localScale.z / 2)
+				{
+					ChooseBlockToPlace(choosingItem, new Vector3(LookingDirection.collider.transform.position.x, LookingDirection.collider.transform.position.y, LookingDirection.collider.transform.position.z + 1));
+				}
+				else if (LookingDirection.point.z - LookingDirection.collider.transform.position.z
+					== -(LookingDirection.collider.transform.localScale.z / 2))
+				{
+					ChooseBlockToPlace(choosingItem, new Vector3(LookingDirection.collider.transform.position.x, LookingDirection.collider.transform.position.y, LookingDirection.collider.transform.position.z - 1));
+				}
+			}
 		}
 	}
-	
+	private void ChooseBlockToPlace(int choosingItem, Vector3 position)
+	{
+		if (InventoryBlockName.Count - 1 >= choosingItem)
+		{
+			GameObject BlockNewPlaced;
+			switch (InventoryBlockName[choosingItem])
+			{
+				case "Grass Block(Clone)":
+					BlockNewPlaced = Instantiate(BlockList.GetComponent<GroundGeneration>().grass);
+					break;
+				case "Dirt Block(Clone)":
+					BlockNewPlaced = Instantiate(BlockList.GetComponent<GroundGeneration>().dirt);
+					break;
+				case "Stone Block(Clone)":
+					BlockNewPlaced = Instantiate(BlockList.GetComponent<GroundGeneration>().stone);
+					break;
+				case "Oak Leaf Block(Clone)":
+					BlockNewPlaced = Instantiate(BlockList.GetComponent<GroundGeneration>().oakLeaves);
+					break;
+				case "Oak Log Block(Clone)":
+					BlockNewPlaced = Instantiate(BlockList.GetComponent<GroundGeneration>().oakLog);
+					break;
+				case "Brich Leaf Block(Clone)":
+					BlockNewPlaced = Instantiate(BlockList.GetComponent<GroundGeneration>().brichLeaves);
+					break;
+				case "Brich Log Block(Clone)":
+					BlockNewPlaced = Instantiate(BlockList.GetComponent<GroundGeneration>().brichLog);
+					break;
+				default:
+					BlockNewPlaced = Instantiate(BlockList.GetComponent<GroundGeneration>().dirt);
+					break;
+			}
+			BlockNewPlaced.transform.position = position;
+		}
+	}
 
 	private void tryDestoryBlock()
 	{
@@ -89,10 +159,9 @@ public class playerCtrl : MonoBehaviour
 			RaycastHit rh;
 
 			//ignore "ignore RayCast" layer
-			int raylayerMask = 1 << 2;
-			raylayerMask = ~raylayerMask;
+			int raylayerMask = ~(1 << 2);
 
-			if (Physics.Raycast(ray, out rh, float.PositiveInfinity, raylayerMask))//2:ignore RayCast
+			if (Physics.Raycast(ray, out rh, 5.0f, raylayerMask))//2:ignore RayCast
 			{
 				foreach (string blockname in blockList)
 				{
@@ -111,16 +180,19 @@ public class playerCtrl : MonoBehaviour
 							bool picked = false;
 							foreach (string BlockName in InventoryBlockName)
 							{
-							if (rh.collider.name == BlockName)
+								if (rh.collider.name == BlockName)
 								{
 									if (InventoryBlockAmount[ItemIndex] >= 64)
+									{
+										++ItemIndex;
 										continue;
+									}
 									else
 									{
 										++InventoryBlockAmount[ItemIndex];
 										picked = !picked;
 									}
-										break;
+									break;
 								}
 								++ItemIndex;
 							}
@@ -181,7 +253,7 @@ public class playerCtrl : MonoBehaviour
 
 	int playerGoFront = 0;
 	int playerGoLeft = 0;
-	
+
 	private void playerWalk()
 	{
 		if (onGround)
@@ -335,17 +407,19 @@ public class playerCtrl : MonoBehaviour
 		time += Time.deltaTime; // * 100;
 		time %= 1200;
 		Light.transform.rotation = Quaternion.Euler(time / 1200 * 360, 0, 0);
-		Debug.Log((time / 1200) * 360);
+		//Debug.Log((time / 1200) * 360);
 	}
 
 	GameObject body;
 	private void Awake()
 	{
 		/*related to GetChild*/
+		hotbarCanvas = Instantiate(hotbarCanvas);
 		inputField = keyTCanvas.gameObject.transform.GetChild(0).GetChild(1).gameObject;
 		animator = transform.GetChild(0).GetComponent<Animator>();
 		body = transform.GetChild(0).gameObject;
-		HotBarInventory = GameObject.FindGameObjectWithTag("Inventory");
+		HotBarInventory = GameObject.Find("HotBar");
+		BlockList = GameObject.FindGameObjectWithTag("map");
 	}
 
 	// Use this for initialization
@@ -353,7 +427,6 @@ public class playerCtrl : MonoBehaviour
 	{
 		//lock mouse
 		Cursor.lockState = CursorLockMode.Locked;
-		hotbarCanvas = Instantiate(hotbarCanvas);
 	}
 
 	// Update is called once per frame
@@ -397,9 +470,12 @@ public class playerCtrl : MonoBehaviour
 	//public Vector3 moving_vector;
 	private MeshRenderer meshRenderer;
 
-	[SerializeField] float movingSpeed = 10f;
-	[SerializeField] float movingSpeedRate = 1.0f;
-	[SerializeField] float movingSpeedRateInAir = 0.3f;
+	[SerializeField]
+	float movingSpeed = 10f;
+	[SerializeField]
+	float movingSpeedRate = 1.0f;
+	[SerializeField]
+	float movingSpeedRateInAir = 0.3f;
 	public float jumpForce;
 
 	//true when player rightclick a block
@@ -412,9 +488,11 @@ public class playerCtrl : MonoBehaviour
 	public bool NewBlockPicked = true;
 	//For Placing block
 	GameObject HotBarInventory;
+	GameObject BlockList;
 
 	public bool onGround = false; //if player standing on ground
-	[SerializeField] bool canDestory = true; //if player can destroy blocks
+	[SerializeField]
+	bool canDestory = true; //if player can destroy blocks
 
 	Animator animator;
 
@@ -422,11 +500,14 @@ public class playerCtrl : MonoBehaviour
 	public float speedH = 2.0f;
 	public float speedV = 2.0f;
 
-	[SerializeField] float yaw = 0.0f;
-	[SerializeField] float pitch = 0.0f;
+	[SerializeField]
+	float yaw = 0.0f;
+	[SerializeField]
+	float pitch = 0.0f;
 	///
 
-	[SerializeField] bool lockMouse = true;
+	[SerializeField]
+	bool lockMouse = true;
 	public GameObject pauseCanvas;//Pause Canvas
 	public Canvas hotbarCanvas;
 	public GameObject keyTCanvas;
@@ -434,6 +515,8 @@ public class playerCtrl : MonoBehaviour
 
 	private int spectMode = 0;
 
-	[SerializeField] float time = 6000;
-	[SerializeField] GameObject Light;
+	[SerializeField]
+	float time = 6000;
+	[SerializeField]
+	GameObject Light;
 }

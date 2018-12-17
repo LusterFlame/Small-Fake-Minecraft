@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Inventory
+  - map
   layers:
   - Default
   - TransparentFX

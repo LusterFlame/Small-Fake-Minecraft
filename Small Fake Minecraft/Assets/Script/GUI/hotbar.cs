@@ -25,6 +25,7 @@ public class hotbar : MonoBehaviour {
 		{
 			selectItemSlot += 9;
 		}
+		Debug.Log(selectItemSlot);
 	}
 
 	private void GetNewBlock()
@@ -95,6 +96,9 @@ public class hotbar : MonoBehaviour {
 			Item[temp] = Instantiate(Item[temp]);
 			Item[temp].transform.SetParent(transform);
 			Item[temp].transform.position = new Vector3(temp * 80 + 19, Item[temp].transform.parent.position.y - 19, 100);
+			ItemCount[temp] = Instantiate(ItemCount[temp]);
+			ItemCount[temp].transform.SetParent(transform);
+			ItemCount[temp].transform.position = new Vector3(temp * 80 + 36, ItemCount[temp].transform.parent.position.y - 40, 100);
 		}
 		HotBarSelected = Instantiate(HotBarSelected);
 		HotBarSelected.transform.SetParent(transform);
@@ -107,6 +111,7 @@ public class hotbar : MonoBehaviour {
 		GetNewBlock();
 		CheckEmptyBlank();
 		RefreshHotBarImage();
+		RefreshHotBarItemCount();
 		HotBarSelected.transform.position = new Vector3((Screen.width - 728) / 2 + selectItemSlot * 80, 0, 0);
 	}
 
@@ -143,6 +148,14 @@ public class hotbar : MonoBehaviour {
 			}
 		}
 	}
+	private void RefreshHotBarItemCount()
+	{
+		for(int temp = 0;temp < InventoryBlockAmount.Count;++temp)
+		{
+			if(InventoryBlockAmount[temp] != 0)
+			ItemCount[temp].text = InventoryBlockAmount[temp].ToString();
+		}
+	}
 
 	public int selectItemSlot;
 	public RawImage HotBarSelected;
@@ -162,4 +175,5 @@ public class hotbar : MonoBehaviour {
 	public RawImage BrichLeafBlock;
 
 	[SerializeField] private RawImage[] Item = new RawImage[9];
+	[SerializeField] private Text[] ItemCount = new Text[9];
 }

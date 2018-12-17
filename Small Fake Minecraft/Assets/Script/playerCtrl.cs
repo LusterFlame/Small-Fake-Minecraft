@@ -114,6 +114,21 @@ public class playerCtrl : MonoBehaviour
 			}
 		}
 	}
+
+	private void CheckEmptyBlank()
+	{
+		for (int index = 0; index <= InventoryBlockName.Count - 1; ++index)
+		{
+			if (InventoryBlockName[index] == null || InventoryBlockAmount[index] <= 0)
+			{
+				InventoryBlockName.RemoveAt(index);
+				InventoryBlockAmount.RemoveAt(index);
+				break;
+			}
+			++index;
+		}
+	}
+
 	private void ChooseBlockToPlace(int choosingItem, Vector3 position)
 	{
 		if (InventoryBlockName.Count - 1 >= choosingItem)
@@ -143,10 +158,22 @@ public class playerCtrl : MonoBehaviour
 					BlockNewPlaced = Instantiate(BlockList.GetComponent<GroundGeneration>().brichLog);
 					break;
 				default:
-					BlockNewPlaced = Instantiate(BlockList.GetComponent<GroundGeneration>().dirt);
+					BlockNewPlaced = null;
 					break;
 			}
-			BlockNewPlaced.transform.position = position;
+			--InventoryBlockAmount[choosingItem];
+			if(InventoryBlockAmount[choosingItem] <= 0)
+			{
+				InventoryBlockAmount.RemoveAt(choosingItem);
+				InventoryBlockName.RemoveAt(choosingItem);
+				HotBarInventory.GetComponent<hotbar>().InventoryBlockAmount.RemoveAt(choosingItem);
+				HotBarInventory.GetComponent<hotbar>().InventoryBlockName.RemoveAt(choosingItem);
+			}
+			--HotBarInventory.GetComponent<hotbar>().InventoryBlockAmount[choosingItem];
+			if(BlockNewPlaced != null)
+			{
+				BlockNewPlaced.transform.position = position;
+			}
 		}
 	}
 
@@ -445,6 +472,7 @@ public class playerCtrl : MonoBehaviour
 			prepareForFall();
 			spectChange();
 			timeChange();
+			CheckEmptyBlank();
 		}
 		else
 		{

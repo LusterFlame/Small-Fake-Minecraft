@@ -74,7 +74,7 @@ public class hotbar : MonoBehaviour {
 	{
 		for(int index = 0;index <= InventoryBlockName.Count - 1;++index)
 		{
-			if(InventoryBlockName[index] == null)
+			if(InventoryBlockName[index] == null || InventoryBlockAmount[index] <= 0)
 			{
 				InventoryBlockName.RemoveAt(index);
 				InventoryBlockAmount.RemoveAt(index);
@@ -83,6 +83,7 @@ public class hotbar : MonoBehaviour {
 			++index;
 		}
 	}
+
 
 	void Awake()
 	{
@@ -117,6 +118,11 @@ public class hotbar : MonoBehaviour {
 
 	private void RefreshHotBarImage()
 	{
+		for(int temp = 0;temp < 9;++temp)
+		{
+			Item[temp].texture = Base.texture;
+		}
+
 		for(int temp = 0;temp <= InventoryBlockName.Count - 1; ++temp)
 		{
 			switch(InventoryBlockName[temp])
@@ -150,7 +156,11 @@ public class hotbar : MonoBehaviour {
 	}
 	private void RefreshHotBarItemCount()
 	{
-		for(int temp = 0;temp < InventoryBlockAmount.Count;++temp)
+		for (int temp = 0; temp < 9; ++temp)
+		{
+			ItemCount[temp].text = "";
+		}
+		for (int temp = 0;temp < InventoryBlockAmount.Count;++temp)
 		{
 			if(InventoryBlockAmount[temp] != 0)
 			ItemCount[temp].text = InventoryBlockAmount[temp].ToString();

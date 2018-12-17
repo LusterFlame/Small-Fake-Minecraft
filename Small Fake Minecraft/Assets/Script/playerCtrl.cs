@@ -142,6 +142,9 @@ public class playerCtrl : MonoBehaviour
 				case "Brich Log Block(Clone)":
 					BlockNewPlaced = Instantiate(BlockList.GetComponent<GroundGeneration>().brichLog);
 					break;
+				case "Sand Block(Clone)":
+					BlockNewPlaced = Instantiate(BlockList.GetComponent<GroundGeneration>().sand);
+					break;
 				default:
 					BlockNewPlaced = null;
 					break;
@@ -432,14 +435,14 @@ public class playerCtrl : MonoBehaviour
 		//Debug.Log(time);
 	}
 
-	GameObject body;
+	//GameObject body;
 	private void Awake()
 	{
 		/*related to GetChild*/
 		hotbarCanvas = Instantiate(hotbarCanvas);
 		inputField = keyTCanvas.gameObject.transform.GetChild(0).GetChild(1).gameObject;
 		animator = transform.GetChild(0).GetComponent<Animator>();
-		body = transform.GetChild(0).gameObject;
+		//body = transform.GetChild(0).gameObject;
 		HotBarInventory = GameObject.Find("HotBar");
 		BlockList = GameObject.FindGameObjectWithTag("map");
 	}
@@ -488,6 +491,7 @@ public class playerCtrl : MonoBehaviour
 		"Oak Log Block(Clone)",
 		"Brich Leaf Block(Clone)",
 		"Brich Log Block(Clone)",
+		"Sand Block(Clone)"
 	};
 
 	//public Vector3 moving_vector;

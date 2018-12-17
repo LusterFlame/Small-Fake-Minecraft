@@ -78,6 +78,8 @@ MonoBehaviour:
     type: 2}
   BrichLeafBlock: {fileID: 114049976206246810, guid: ec3e8659e5e44b44fac1827dd214b4c5,
     type: 2}
+  SandBlock: {fileID: 114031809792402754, guid: ebc6ccc8964a63a4fb85b628a6706aa5,
+    type: 2}
   Item:
   - {fileID: 114383751334332868, guid: 77ff02adf98d1814f8a76070aa72a647, type: 2}
   - {fileID: 114383751334332868, guid: 77ff02adf98d1814f8a76070aa72a647, type: 2}

@@ -291,6 +291,7 @@ MonoBehaviour:
   brichLeaves: {fileID: 1422312557778404, guid: 773d4596f3dd16e4db8a5bcf7738b2ac,
     type: 2}
   brichLog: {fileID: 1212049066029252, guid: 2448f226bfa46954d9d334a743f1287c, type: 2}
+  sand: {fileID: 1504488041741530, guid: 82917be56c7d81d4fb82fe7d8bbde9d1, type: 2}
 --- !u!1 &204598029
 GameObject:
   m_ObjectHideFlags: 0

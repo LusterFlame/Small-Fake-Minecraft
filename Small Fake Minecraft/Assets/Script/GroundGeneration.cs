@@ -13,8 +13,14 @@ public class GroundGeneration : MonoBehaviour {
 	public GameObject oakLog;
 	public GameObject brichLeaves;
 	public GameObject brichLog;
+	public GameObject sand;
 	private GameObject bedrockCollider;
+	[SerializeField] private int[,] height;
 
+	void Awake()
+	{
+		height = new int[64, 64];
+	}
 	// Use this for initialization
 	void Start() {
 
@@ -26,21 +32,26 @@ public class GroundGeneration : MonoBehaviour {
 		placeBedrock();
 
 		//Decide Ground height for every block
-		int[,] height = new int[64, 64];
 		setHeight(height);
 		// Original Height Decided
 
 		//place dirt blocks
 		placeGround(height);
 
+		//Random sands
+		for (int temp = 0; temp <= 12; ++temp)
+		{
+			PlaceSand(height, Random.Range(-25, 25), Random.Range(-25, 25));
+		}
 		//Place trees
 		placeTree(height, oakLog, oakLeaves);
 		placeTree(height, brichLog, brichLeaves);
+
 	}
 
 	private void setHeight(int[,] height)
 	{
-		height[0, 0] = Random.Range(1, 4);
+		height[0, 0] = Random.Range(2, 6);
 		for (int temp = 0; temp < 64; temp++)
 			for (int temp2 = 0; temp2 < 64; temp2++)
 			{
@@ -159,12 +170,6 @@ public class GroundGeneration : MonoBehaviour {
 						}
 					}
 				}
-			}
-		for(int temp = 0;temp < 64;++temp)
-			for(int temp2 = 0;temp2 < 64;++temp2)
-			{
-				if (height[temp, temp2] > 5)
-					height[temp, temp2] = 5;
 			}
 		//Make it smoother
 		for (int temp = 0; temp < 10; ++temp)
@@ -296,6 +301,30 @@ public class GroundGeneration : MonoBehaviour {
 				GameObject Block9 = Instantiate(LeafType);
 				Block9.transform.position = new Vector3(TreeX, TreeY, TreeZ + temp * -1);
 			}
+		}
+	}
+
+	private void PlaceSand(int[,] height, int SandX, int SandZ)
+	{
+		++height[SandX + 31, SandZ + 31];
+		GameObject Block16 = Instantiate(sand);
+		Debug.Log(height[SandX + 31, SandZ + 31].ToString());
+		Block16.transform.position = new Vector3(SandX, height[SandX + 31, SandZ + 31], SandZ);
+		if(SandX + 1 < 32 && Random.Range(0, 4) == 0)
+		{
+			PlaceSand(height, SandX + 1, SandZ);
+		}
+		else if (SandX - 1 > -31 && Random.Range(0, 4) == 0)
+		{
+			PlaceSand(height, SandX - 1, SandZ);
+		}
+		else if(SandZ + 1 < 32 && Random.Range(0, 4) == 0)
+		{
+			PlaceSand(height, SandX, SandZ + 1);
+		}
+		else if(SandZ - 1 > -31 && Random.Range(0, 4) == 0)
+		{
+			PlaceSand(height, SandX, SandZ - 1);
 		}
 	}
 	

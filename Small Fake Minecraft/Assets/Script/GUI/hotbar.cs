@@ -148,6 +148,9 @@ public class hotbar : MonoBehaviour {
 				case "Brich Log Block(Clone)":
 					Item[temp].texture = BrichLogBlock.texture;
 					break;
+				case "Sand Block(Clone)":
+					Item[temp].texture = SandBlock.texture;
+					break;
 				default:
 					Item[temp].texture = Base.texture;
 					break;
@@ -183,6 +186,7 @@ public class hotbar : MonoBehaviour {
 	public RawImage OakLeafBlock;
 	public RawImage BrichLogBlock;
 	public RawImage BrichLeafBlock;
+	public RawImage SandBlock;
 
 	[SerializeField] private RawImage[] Item = new RawImage[9];
 	[SerializeField] private Text[] ItemCount = new Text[9];

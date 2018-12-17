@@ -10,9 +10,14 @@
 T: Open the command input field.
 
 2.Environment
-	
+	By generating a random hight map by some algorithm, we created the map totally randomized but also will not be too bumpy.
+	The Ground Surface are all Grass block, which have different textures on 6 sides, and under that will be dirt and stone blocks.
+	Then there will be two kind of trees, with transparent leaves.Also the Log blocks has also different textures on each side.
 
 3.Your game
+	The Day and Night cycle exists,  and the monster(slimes, it means to be) appear after dawn, disappears in early morning.
+	The hotbar has 9 slot, each can store 64 of 1 kind of block.
+	Also the Inventory auto sorts when there is any empty slots.
 	
 
 4.Game design (how to design your character, monster, etc.)
@@ -26,9 +31,7 @@ T: Open the command input field.
 	The player can jump vertically onto a block.
 	The capability to sprint.
 	A crosshair at the middle of the screen. 
-Unity Chan in cute! lovely! adorable!
-
-
+	Unity Chan in cute! lovely! adorable!
 6.Feedback
 	Time isn't enough!
 

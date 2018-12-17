@@ -340,13 +340,16 @@ public class playerCtrl : MonoBehaviour
 	{
 		if(obj.collider.name == "Slime(Clone)")
 		{
+			lockMouse = false;
+			Cursor.visible = true;
+			Cursor.lockState = CursorLockMode.None;
 			Debug.Log("Fuck");
 			Vector3 bounceDirection = transform.position - obj.collider.transform.position;
 			GetComponent<Rigidbody>().AddForce(bounceDirection.x * 550, 250, bounceDirection.z * 550, ForceMode.Impulse);
 			GetComponent<AudioSource>().Play();
 			DateTime ts = DateTime.Now + TimeSpan.FromSeconds(1);
 			do { } while (DateTime.Now < ts);
-			Cursor.lockState = CursorLockMode.None;
+
 			UnityEngine.SceneManagement.SceneManager.LoadScene(0);
 		}
 	}
@@ -437,7 +440,7 @@ public class playerCtrl : MonoBehaviour
 
 	private void timeChange()
 	{
-		time += Time.deltaTime * 3;
+		time += Time.deltaTime * 6;
 		time %= 1200;
 		Light.transform.rotation = Quaternion.Euler(new Vector3(((int)time / 5 * 1.5f), 0, 0));
 	}
@@ -465,6 +468,7 @@ public class playerCtrl : MonoBehaviour
 		if (lockMouse)
 		{
 			Cursor.lockState = CursorLockMode.Locked;
+			Cursor.visible = false;
 			jumpControl();
 			moveControl();
 			headRotate();
@@ -479,6 +483,7 @@ public class playerCtrl : MonoBehaviour
 		else
 		{
 			Cursor.lockState = CursorLockMode.None;
+			Cursor.visible = true;
 		}
 
 		if (transform.position.y < 0)

@@ -58,21 +58,6 @@ public class playerCtrl : MonoBehaviour
 
 	private void RightMouseClick()
 	{
-		/*		if (Input.GetMouseButtonDown(1))
-				{
-					Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-					RaycastHit ray_cast_hit;
-
-
-					//ignore "ignore RayCast" layer
-					int raylayerMask = 1 << 2;
-					raylayerMask = ~raylayerMask;
-					if (Physics.Raycast(ray, out ray_cast_hit, 16f, raylayerMask))
-					{
-						rightClick = true;
-					}
-				}
-				*/
 		if (Input.GetMouseButtonDown(1))
 		{
 			Ray Looking = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -343,6 +328,16 @@ public class playerCtrl : MonoBehaviour
 		}
 	}
 
+	private void OnCollisionEnter(Collision obj)
+	{
+		if(obj.collider.name == "Slime(Clone)")
+		{
+			Debug.Log("Fuck");
+			Vector3 bounceDirection = transform.position - obj.collider.transform.position;
+			GetComponent<Rigidbody>().AddForce(bounceDirection.x * 550, 250, bounceDirection.z * 550, ForceMode.Impulse);
+		}
+	}
+
 	GameObject pauseCanvasClone;
 	GameObject keyTCanvasClone;
 	private bool keyT = false;
@@ -431,10 +426,10 @@ public class playerCtrl : MonoBehaviour
 
 	private void timeChange()
 	{
-		time += Time.deltaTime; // * 100;
+		time += Time.deltaTime * 30;
 		time %= 1200;
-		Light.transform.rotation = Quaternion.Euler(time / 1200 * 360, 0, 0);
-		Debug.Log((time / 1200) * 360);
+		Light.transform.rotation = Quaternion.Euler(new Vector3(((int)time / 5 * 1.5f), 0, 0));
+		//Debug.Log(time);
 	}
 
 	GameObject body;
@@ -471,7 +466,7 @@ public class playerCtrl : MonoBehaviour
 			commandInput();
 			prepareForFall();
 			spectChange();
-			//timeChange();
+			timeChange();
 			CheckEmptyBlank();
 		}
 		else
@@ -543,8 +538,7 @@ public class playerCtrl : MonoBehaviour
 
 	private int spectMode = 0;
 
-	[SerializeField]
-	float time = 6000;
+	public float time = 0;
 	[SerializeField]
 	GameObject Light;
 }

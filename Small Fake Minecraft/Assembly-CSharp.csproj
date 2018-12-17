@@ -60,6 +60,7 @@
      <Compile Include="Assets\Script\menu\startGame.cs" />
      <Compile Include="Assets\Script\MonsterGeneration.cs" />
      <Compile Include="Assets\Script\playerCtrl.cs" />
+     <Compile Include="Assets\Script\SlimeScript.cs" />
      <None Include="Assets\Resources\char\UnityChan\Models\UnityChanShader\Shader\Unitychan_chara_eye.shader" />
      <None Include="Assets\Resources\char\UnityChan\Models\UnityChanShader\Shader\Unitychan_chara_fuku.shader" />
      <None Include="Assets\Resources\char\UnityChan\Models\UnityChanShader\Shader\Unitychan_chara_fuku_ds.shader" />

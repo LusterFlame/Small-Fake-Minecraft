@@ -471,7 +471,7 @@ public class playerCtrl : MonoBehaviour
 			commandInput();
 			prepareForFall();
 			spectChange();
-			timeChange();
+			//timeChange();
 			CheckEmptyBlank();
 		}
 		else

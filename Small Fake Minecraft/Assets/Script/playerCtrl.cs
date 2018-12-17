@@ -162,14 +162,14 @@ public class playerCtrl : MonoBehaviour
 					break;
 			}
 			--InventoryBlockAmount[choosingItem];
-			if(InventoryBlockAmount[choosingItem] <= 0)
+			--HotBarInventory.GetComponent<hotbar>().InventoryBlockAmount[choosingItem];
+			if (InventoryBlockAmount[choosingItem] <= 0)
 			{
 				InventoryBlockAmount.RemoveAt(choosingItem);
 				InventoryBlockName.RemoveAt(choosingItem);
 				HotBarInventory.GetComponent<hotbar>().InventoryBlockAmount.RemoveAt(choosingItem);
 				HotBarInventory.GetComponent<hotbar>().InventoryBlockName.RemoveAt(choosingItem);
 			}
-			--HotBarInventory.GetComponent<hotbar>().InventoryBlockAmount[choosingItem];
 			if(BlockNewPlaced != null)
 			{
 				BlockNewPlaced.transform.position = position;
@@ -434,7 +434,7 @@ public class playerCtrl : MonoBehaviour
 		time += Time.deltaTime; // * 100;
 		time %= 1200;
 		Light.transform.rotation = Quaternion.Euler(time / 1200 * 360, 0, 0);
-		//Debug.Log((time / 1200) * 360);
+		Debug.Log((time / 1200) * 360);
 	}
 
 	GameObject body;

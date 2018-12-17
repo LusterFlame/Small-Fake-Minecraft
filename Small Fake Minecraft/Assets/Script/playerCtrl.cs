@@ -188,7 +188,7 @@ public class playerCtrl : MonoBehaviour
 			//ignore "ignore RayCast" layer
 			int raylayerMask = ~(1 << 2);
 
-			if (Physics.Raycast(ray, out rh, 5.0f, raylayerMask))//2:ignore RayCast
+			if (Physics.Raycast(ray, out rh, spectMode == 0 ? 8.0f : (spectMode == 1 ? 5.0f :-3.0f), raylayerMask))//2:ignore RayCast
 			{
 				foreach (string blockname in blockList)
 				{
@@ -471,7 +471,7 @@ public class playerCtrl : MonoBehaviour
 			commandInput();
 			prepareForFall();
 			spectChange();
-			timeChange();
+			//timeChange();
 			CheckEmptyBlank();
 		}
 		else

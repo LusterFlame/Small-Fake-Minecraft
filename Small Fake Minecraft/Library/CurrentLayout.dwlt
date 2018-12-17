@@ -20,7 +20,7 @@ MonoBehaviour:
   m_ShowMode: 4
   m_Title: 
   m_RootView: {fileID: 2}
-  m_MinSize: {x: 950, y: 542}
+  m_MinSize: {x: 950, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &2
 MonoBehaviour:
@@ -43,7 +43,7 @@ MonoBehaviour:
     y: 0
     width: 1920
     height: 997
-  m_MinSize: {x: 950, y: 542}
+  m_MinSize: {x: 950, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &3
 MonoBehaviour:
@@ -106,10 +106,10 @@ MonoBehaviour:
     y: 30
     width: 1920
     height: 947
-  m_MinSize: {x: 681, y: 492}
+  m_MinSize: {x: 683, y: 492}
   m_MaxSize: {x: 14004, y: 14042}
   vertical: 0
-  controlID: 1335
+  controlID: 124
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -130,10 +130,10 @@ MonoBehaviour:
     y: 0
     width: 1603
     height: 947
-  m_MinSize: {x: 404, y: 492}
+  m_MinSize: {x: 406, y: 492}
   m_MaxSize: {x: 10002, y: 14042}
   vertical: 1
-  controlID: 1349
+  controlID: 49
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -154,10 +154,10 @@ MonoBehaviour:
     y: 0
     width: 1603
     height: 632
-  m_MinSize: {x: 404, y: 221}
-  m_MaxSize: {x: 8004, y: 4021}
+  m_MinSize: {x: 406, y: 221}
+  m_MaxSize: {x: 8006, y: 4021}
   vertical: 0
-  controlID: 1350
+  controlID: 50
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -366,9 +366,9 @@ MonoBehaviour:
   m_PersistentViewDataDictionary: {fileID: 0}
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 22310000
-    m_LastClickedID: 12578
-    m_ExpandedIDs: f8e2fffffae2ffff000000001e310000
+    m_SelectedIDs: 
+    m_LastClickedID: 0
+    m_ExpandedIDs: 10e5f9ff68fbffff00000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -452,7 +452,7 @@ MonoBehaviour:
   m_Rotation:
     m_Target: {x: 0.24395652, y: -0.7513815, z: 0.38262206, w: 0.47907367}
     speed: 2
-    m_Value: {x: 0.24395649, y: -0.7513814, z: 0.382622, w: 0.4790736}
+    m_Value: {x: -0.2439565, y: 0.7513814, z: -0.382622, w: -0.4790736}
   m_Size:
     m_Target: 35.993984
     speed: 2
@@ -507,20 +507,20 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Resources/Music/BGM
+    - Assets/Resources/Music/BGS
   m_ViewMode: 1
   m_StartGridSize: 95
   m_LastFolders:
-  - Assets/Resources/Music/BGM
+  - Assets/Resources/Music/BGS
   m_LastFoldersGridSize: 95
   m_LastProjectPath: D:\Users\User\Documents\GitHub\Small-Fake-Minecraft\Small Fake
     Minecraft
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 15}
-    m_SelectedIDs: 28300000
-    m_LastClickedID: 12328
-    m_ExpandedIDs: 00000000c82a0000822b0000c42c0000ce2c0000342d0000a42d0000ae2d00004e2f00001e30000050300000543000005630000056340000583400005a340000ffffff7f
+    m_SelectedIDs: 822a0000
+    m_LastClickedID: 10882
+    m_ExpandedIDs: 00000000a2270000ac2700002a280000c6280000d628000020290000e42a0000e82a0000e42b00001a2c0000222c0000242c0000e6310000e8310000ea310000ffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -548,7 +548,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000c82a0000822b0000c42c0000ce2c0000342d0000a42d0000ae2d00004e2f00001e30000050300000543000005630000056340000583400005a340000ffffff7f
+    m_ExpandedIDs: 00000000a2270000ac2700002a280000c6280000d628000020290000e42a0000e82a0000e42b00001a2c0000222c0000242c0000e6310000e8310000ea310000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

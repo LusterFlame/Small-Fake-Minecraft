@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 
+
 public class playerCtrl : MonoBehaviour
 {
 	//player need rigid body!
@@ -337,6 +338,10 @@ public class playerCtrl : MonoBehaviour
 			Debug.Log("Fuck");
 			Vector3 bounceDirection = transform.position - obj.collider.transform.position;
 			GetComponent<Rigidbody>().AddForce(bounceDirection.x * 550, 250, bounceDirection.z * 550, ForceMode.Impulse);
+			GetComponent<AudioSource>().Play();
+
+			Cursor.lockState = CursorLockMode.None;
+			UnityEngine.SceneManagement.SceneManager.LoadScene(0);
 		}
 	}
 
